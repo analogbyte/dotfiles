@@ -1,3 +1,5 @@
+# WARNING: I do not use screen anymore, so some fancy stuff used in other
+# configs (vim colorschemes mostly) might not work well. Just use tmux.
 vbell off
 bell_msg '^G'
 term screen-256color
