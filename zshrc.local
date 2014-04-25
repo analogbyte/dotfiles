@@ -1,7 +1,13 @@
+# autostart tmux
+if which tmux 2>&1 >/dev/null; then
+    test -z "$TMUX" && (tmux attach || tmux new-session)
+fi
+
 setopt vi
-bindkey '\e.' insert-last-word #alt . working in vim mode
+bindkey '\e.' insert-last-word # make alt+dot work in vim mode
 export TERM="screen-256color"
 
+# virtualenvs
 export WORKON_HOME=~/.envs
 
 if which apt-get 2>&1 >/dev/null; then
@@ -20,7 +26,7 @@ if which pacman 2>&1 >/dev/null; then
     fi
 fi
 
-# autostart tmux
-if which tmux 2>&1 >/dev/null; then
-    test -z "$TMUX" && (tmux attach || tmux new-session)
-fi
+alias -g L=' | less'
+alias -g G=' | grep'
+alias -g A=' | ack'
+alias t=task
