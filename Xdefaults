@@ -29,8 +29,8 @@ urxvt*color15 : #c4c4c4
 urxvt*geometry:          800x600
 urxvt*depth:             32
 urxvt*scrollBar:         false
-urxvt*font:              xft:ubuntumono:size=13,style=regular
-urxvt*boldFont:          xft:ubuntumono:size=13,style=bold
+urxvt*font:              xft:ubuntumono:size=11,style=regular
+urxvt*boldFont:          xft:ubuntumono:size=11,style=bold
 
 urxvt*urgentOnBell:      true
 urxvt*saveLines:         32767
