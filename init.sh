@@ -1,9 +1,14 @@
-mkdir -p ~/.backup
-ln -snf `pwd`/vimrc ~/.vimrc
-ln -snf `pwd`/tmux.conf ~/.tmux.conf
-ln -snf `pwd`/zshrc.local ~/.zshrc.local
-ln -snf `pwd`/zshrc.pre ~/.zshrc.pre
-ln -snf `pwd`/gitconfig ~/.gitconfig
-ln -snf `pwd`/screenrc ~/.screenrc
-ln -snf `pwd`/Xdefaults ~/.Xdefaults
-wget -O ~/.zshrc http://git.grml.org/f/grml-etc-core/etc/zsh/zshrc
+mkdir -p ~/.backup                      # for my vimrc
+
+src_dir="`dirname \"$0\"`"              # relative path
+src_dir="`( cd \"$src_dir\" && pwd )`"  # absolutized and normalized path
+
+# link all my stuff
+for file in `ls $src_dir`; do
+    if [[ $file != "README.md" && $file != "init.sh" ]]; then
+        ln -snf $src_dir/$file ~/.$file
+    fi
+done
+
+# get the grml projects zshrc
+wget --quiet -O ~/.zshrc http://git.grml.org/f/grml-etc-core/etc/zsh/zshrc
