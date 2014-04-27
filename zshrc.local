@@ -3,6 +3,7 @@ if which tmux 2>&1 >/dev/null; then
     test -z "$TMUX" && (tmux attach || tmux new-session)
 fi
 
+# basic stuff
 setopt vi
 bindkey '\e.' insert-last-word # make alt+dot work in vim mode
 export TERM="screen-256color"
@@ -26,7 +27,35 @@ if which pacman 2>&1 >/dev/null; then
     fi
 fi
 
+# use the vi navigation keys (hjkl) besides cursor keys in menu completion
+bindkey -M menuselect 'h' vi-backward-char        # left
+bindkey -M menuselect 'k' vi-up-line-or-history   # up
+bindkey -M menuselect 'l' vi-forward-char         # right
+bindkey -M menuselect 'j' vi-down-line-or-history # bottom
+
+# just type '...' to get '../..'
+rationalise-dot() {
+    local MATCH
+    if [[ $LBUFFER =~ '(^|/| |     |'$'\n''|\||;|&)\.\.$' ]]; then
+        LBUFFER+=/
+        zle self-insert
+        zle self-insert
+    else
+        zle self-insert
+    fi
+}
+zle -N rationalise-dot
+bindkey . rationalise-dot
+
+# without this, typing a . aborts incremental history search
+bindkey -M isearch . self-insert
+
+# shorter man page lines
+export MANWIDTH=${MANWIDTH:-80}
+
+# aliases
 alias -g L=' | less'
 alias -g G=' | grep'
 alias -g A=' | ack'
+alias -g V=' | vim -'
 alias t=task
