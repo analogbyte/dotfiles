@@ -53,6 +53,14 @@ bindkey -M isearch . self-insert
 # shorter man page lines
 export MANWIDTH=${MANWIDTH:-80}
 
+# tmux window titles
+case "$TERM" in
+    screen*)
+        precmd () {
+            print -Pn "\033k`hostname -s`\033\\"
+        }
+esac
+
 # aliases
 alias -g L=' | less'
 alias -g G=' | grep'
