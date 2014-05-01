@@ -12,3 +12,11 @@ done
 
 # get the grml projects zshrc
 wget --quiet -O ~/.zshrc http://git.grml.org/f/grml-etc-core/etc/zsh/zshrc
+
+# make user check if everything is installed, protip: `dotfiles/init.sh`
+if which apt-get &> /dev/null; then
+    echo sudo apt-get install vim-nox tmux git zsh keychain gnupg-agent exuberant-ctags
+fi
+if which pacman &> /dev/null; then
+    echo sudo pacman -S gvim tmux git zsh keychain gnupg ctags
+fi
