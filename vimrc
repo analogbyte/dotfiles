@@ -88,6 +88,17 @@ au BufRead,BufNewFile *.ino set filetype=c
 
 let mapleader = "\<Space>"
 
+" vp doesn't replace paste buffer
+function! RestoreRegister()
+  let @" = s:restore_reg
+  return ''
+endfunction
+function! s:Repl()
+  let s:restore_reg = @"
+  return "p@=RestoreRegister()\<cr>"
+endfunction
+vmap <silent> <expr> p <sid>Repl()
+
 " some easy ones
 nnoremap <Leader>o :CtrlP<CR>
 nnoremap <Leader>w :w<CR>
