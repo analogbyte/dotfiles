@@ -37,3 +37,5 @@ urxvt*saveLines:         32767
 
 urxvt*keysym.Home:       \033[1~
 urxvt*keysym.End:        \033[4~
+
+urxvt*iso14755: False
