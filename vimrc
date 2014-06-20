@@ -24,6 +24,9 @@ set foldmethod=marker " fold by marker
 set scrolloff=11 " minimum lines to the screens end
 set autochdir " always be in the right directory
 set pastetoggle=<F12> " toggle paste
+set showmatch " matching braces
+set noshowmode " airline does this already
+set noswapfile " 21. century, yay
 
 "" persistent undo and backup
 set history=1000
@@ -44,18 +47,12 @@ set wrapmargin=0
 set smartcase
 set hlsearch
 set incsearch
-set showmatch
 
 " snappy timeouts
 set notimeout
 set ttimeout
 set ttimeoutlen=0
 
-" airline does this already
-set noshowmode
-
-" 21. century, yay
-set noswapfile
 
 "####################################################################
 " visual style {{{
