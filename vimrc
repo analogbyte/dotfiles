@@ -46,27 +46,40 @@ set hlsearch
 set incsearch
 set showmatch
 
+" snappy timeouts
+set notimeout
+set ttimeout
+set ttimeoutlen=0
+
+" airline does this already
+set noshowmode
+
+" 21. century, yay
+set noswapfile
+
 "####################################################################
 " visual style {{{
 "####################################################################
-"" colorscheme
-"colorscheme wombat256mod " set after the bundles at the end of this file!
+" colorscheme
 set background=dark
 set t_Co=256 " force more colors
 
-"" highlight the current line and column
+" highlight the current line and column
 set cul
 set cuc
 
-"" statusbar
+" statusbar
 set cmdheight=2
 set laststatus=2
 set showcmd
 
-"" linenumbers
+" linenumbers
 set number
 set relativenumber
 set ruler
+
+" highlight git merge markers
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 "" }}}
 
 "####################################################################
@@ -80,6 +93,23 @@ au BufRead,BufNewFile *.sls set filetype=sls
 
 " arduino syntax highlightning
 au BufRead,BufNewFile *.ino set filetype=c
+
+" column hl only in active window and in non-insert modes
+augroup cuc
+    au!
+    au WinLeave,InsertEnter * set nocuc
+    au WinEnter,InsertLeave * set cuc
+augroup END
+
+" grow and shrink splits with the window
+au VimResized * :wincmd =
+
+augroup trailing
+    au!
+    au InsertEnter * :set listchars-=trail:⌴
+    au InsertLeave * :set listchars+=trail:⌴
+augroup END
+
 "" }}}
 
 "####################################################################
@@ -136,6 +166,19 @@ nnoremap <silent><S-Tab> :bp<Cr>
 " save with sudo
 cmap w!! w !sudo tee %
 
+" splits
+nmap <silent> <c-k> :wincmd k<CR>
+nmap <silent> <c-j> :wincmd j<CR>
+nmap <silent> <c-h> :wincmd h<CR>
+nmap <silent> <c-l> :wincmd l<CR>
+
+" move char to the end of the line, useful for closing stuff
+nnoremap zl :let @z=@"<cr>x$p:let @"=@z<cr>
+
+" sorting of lines (python imports)
+nnoremap <leader>s vip:!sort<cr>
+vnoremap <leader>s :!sort<cr>
+
 "" }}}
 
 "####################################################################
@@ -163,7 +206,7 @@ Bundle 'tpope/vim-fugitive'
 Bundle 'kien/ctrlp.vim'
 Bundle 'scrooloose/nerdtree'
 Bundle 'tomtom/tcomment_vim'
-Bundle 'vim-scripts/taglist.vim'
+Bundle 'majutsushi/tagbar'
 Bundle 'saltstack/salt-vim'
 Bundle 'vim-scripts/wombat256.vim'
 Bundle 'bling/vim-airline'
@@ -193,6 +236,7 @@ Bundle 'ivyl/vim-bling'
 Bundle 'mileszs/ack.vim'
 Bundle 'sjl/gundo.vim'
 Bundle 'Yggdroot/indentLine'
+Bundle 'jmcantrell/vim-virtualenv'
 
 if installed_vundle == 1
     :BundleInstall
@@ -213,10 +257,8 @@ let NERDTreeMouseMode=2
 let NERDTreeShowHidden=1
 let NERDTreeKeepTreeInNewTab=1
 
-" Taglist
-noremap <silent><leader>t :TlistToggle<Cr>
-let Tlist_Use_Right_Window=1
-let Tlist_GainFocus_On_ToggleOpen = 1
+" Tagbar
+noremap <silent><leader>t :Tagbar<Cr>
 
 " Colorscheme from bundle (needs to come after its Bundle line)
 colorscheme wombat256mod
@@ -241,6 +283,11 @@ let g:jedi#goto_assignments_command = "<leader>a"
 
 " GitGutter
 let g:gitgutter_enabled = 0
+highlight clear SignColumn
+highlight GitGutterAdd ctermbg=232 ctermfg=green
+highlight GitGutterChange ctermbg=232 ctermfg=yellow
+highlight GitGutterDelete ctermbg=232 ctermfg=red
+highlight GitGutterChangeDelete ctermbg=232 ctermfg=red
 noremap <silent><leader>g :GitGutterToggle<Cr>
 
 " crtl-p
