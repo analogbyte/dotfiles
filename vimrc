@@ -2,11 +2,15 @@
 " .vimrc
 "####################################################################
 
-set nocompatible " vi compatibility off
+if has('vim_starting')
+    set nocompatible
+    set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
 scriptencoding utf-8
 
 "" filetype plugin and syntax
 syntax on
+set synmaxcol=512
 filetype indent plugin on
 
 "" system
@@ -83,10 +87,7 @@ match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 " general auto commands {{{
 "####################################################################
 " autoremove trailing whitespace
-autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
-
-" salt syntax highlighting
-au BufRead,BufNewFile *.sls set filetype=sls
+au BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 
 " arduino syntax highlightning
 au BufRead,BufNewFile *.ino set filetype=c
@@ -100,12 +101,6 @@ augroup END
 
 " grow and shrink splits with the window
 au VimResized * :wincmd =
-
-augroup trailing
-    au!
-    au InsertEnter * :set listchars-=trail:⌴
-    au InsertLeave * :set listchars+=trail:⌴
-augroup END
 
 "" }}}
 
@@ -135,6 +130,8 @@ nnoremap }q :cnfile<cr>
 " jump to visual lines
 nnoremap j gj
 nnoremap k gk
+nnoremap gj j
+nnoremap gk k
 
 " stay in visual after indent
 vnoremap < <gv
@@ -183,31 +180,43 @@ vnoremap <leader>s :!sort<cr>
 " Credit to: https://github.com/erikzaadi
 "####################################################################
 
-" automatic installation of vundle on fresh deployments
-let installed_vundle=0
-let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
-if !filereadable(vundle_readme)
-    echo "Installing Vundle..."
-    echo ""
-    silent !mkdir -p ~/.vim/bundle
-    silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
-    let installed_vundle=1
+" automatic installation of neobundle on fresh deployments
+if !filereadable(expand('~/.vim/bundle/neobundle.vim/README.md'))
+    silent !git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
+    quit
 endif
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
 
-" begin bundles
-Bundle 'gmarik/vundle'
-Bundle 'myusuf3/numbers.vim'
-Bundle 'tpope/vim-fugitive'
-Bundle 'kien/ctrlp.vim'
-Bundle 'scrooloose/nerdtree'
-Bundle 'tomtom/tcomment_vim'
-Bundle 'majutsushi/tagbar'
-Bundle 'saltstack/salt-vim'
-Bundle 'vim-scripts/wombat256.vim'
-Bundle 'bling/vim-airline'
-Bundle 'goldfeld/vim-seek'
+call neobundle#begin(expand('~/.vim/bundle/'))
+" basics
+NeoBundle 'Shougo/vimproc.vim',
+\ {
+    \ 'build' : {
+        \ 'unix' : 'make -f make_unix.mak',
+        \ 'cygwin' : 'make -f make_cygwin.mak',
+        \ 'windows' : has('win64') ? 'tools\\update-dll-mingw 64' : 'tools\\update-dll-mingw 32',
+        \ 'mac' : 'make -f make_mac.mak'
+    \ }
+\ }
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'tpope/vim-fugitive'
+
+" additional views
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'majutsushi/tagbar'
+NeoBundle 'sjl/gundo.vim'
+NeoBundle 'vimwiki/vimwiki'
+NeoBundle 'airblade/vim-gitgutter'
+
+" minor tweaks
+NeoBundle 'Valloric/ListToggle' "toggle quickfix list
+NeoBundle 'tomtom/tcomment_vim' "toggle comments according to ft (mapping: gc)
+
+" movements and stuff
+NeoBundle 'tpope/vim-surround'
+" Cheatsheet for surround:
+"  cs + $old_surrounding + $new_surrounding = changes old to new, new waits for
+"  xml tags, to use xml tags as $old, use 't'
+NeoBundle 'goldfeld/vim-seek'
 " Cheatsheet for seek:
 "  s + two chars = jump to the first of those chars
 "  action = {d,c,y}
@@ -218,7 +227,10 @@ Bundle 'goldfeld/vim-seek'
 "  $action + p + two chars = target the inner word with the chars and stay
 "  $action + o + two chars = target the outer word with the chars and stay
 "  All those work backwards with their capital counterparts.
-Bundle 'davidhalter/jedi-vim'
+
+" python specific (no lazy loading here, it causes trouble with jedi somehow)
+NeoBundle 'jmcantrell/vim-virtualenv'
+NeoBundle 'davidhalter/jedi-vim'
 " Cheatsheet for jedi
 "  <C-Space> = completion
 "  <leader>a  = goto assignments
@@ -227,22 +239,49 @@ Bundle 'davidhalter/jedi-vim'
 "  <leader>r = renaming
 "  <leader>n = usages
 "  :Pyimport os = opens the os module
-Bundle 'Valloric/ListToggle'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'ivyl/vim-bling'
-Bundle 'mileszs/ack.vim'
-Bundle 'sjl/gundo.vim'
-Bundle 'Yggdroot/indentLine'
-Bundle 'jmcantrell/vim-virtualenv'
 
-if installed_vundle == 1
-    :BundleInstall
-endif
+" visual stuff
+NeoBundle 'bling/vim-airline'
+NeoBundle 'myusuf3/numbers.vim'
+NeoBundle 'Yggdroot/indentLine'
+NeoBundle 'ivyl/vim-bling'
+
+" colorschemes
+NeoBundleLazy 'nanotech/jellybeans.vim'
+NeoBundleLazy 'vim-scripts/wombat256.vim'
+
+" syntax
+au BufRead,BufNewFile *.sls set filetype=sls
+NeoBundleLazy 'saltstack/salt-vim'
+au FileType sls NeoBundleSource salt-vim
+
+call neobundle#end()
+NeoBundleCheck
+
 "" }}}
 
 "####################################################################
-" bundle options {{{
+" bundle options and mappings {{{
 "####################################################################
+
+" Unite.vim
+call unite#custom#profile('default', 'ignorecase', 1)
+call unite#custom#profile('default', 'context', {
+\   'winheight': 10,
+\   'direction': 'botright',
+\ })
+" replace ctrl-p
+nnoremap <C-p> :Unite -start-insert file_rec/async<cr>
+" ack stuff, does not quite replace ack.vim
+let g:unite_source_grep_command = 'ack'
+let g:unite_source_grep_default_opts = '-i --nogroup --nocolor -H'
+nnoremap <leader>/ :Unite grep:.<cr>
+nnoremap <silent><leader><leader> :<C-u>UniteResume<CR>
+" yankring
+let g:unite_source_history_yank_enable = 1
+nnoremap <leader>y :Unite history/yank<cr>
+" buffer switching, very good when many buffers are open
+nnoremap <leader>s :Unite -quick-match buffer<cr>
 
 " NERDTree
 nnoremap <silent><leader>f :NERDTreeToggle<Cr>
@@ -258,6 +297,9 @@ let NERDTreeShowHidden=1
 noremap <silent><leader>t :Tagbar<Cr>
 
 " Colorscheme from bundle (needs to come after its Bundle line)
+"NeoBundleSource jellybeans.vim
+"colorscheme jellybeans
+NeoBundleSource wombat256.vim
 colorscheme wombat256mod
 
 " Airline
@@ -298,4 +340,12 @@ nnoremap <silent><leader>u :GundoToggle<Cr>
 " indentLine
 let g:indentLine_color_term = 239
 
+" vimwiki
+nmap <Leader>wn <Plug>VimwikiNextLink
+nmap <Leader>wp <Plug>VimwikiPrevLink
+
 "" }}}
+
+if filereadable('.vimrc.local')
+    source .vimrc.local
+endif
