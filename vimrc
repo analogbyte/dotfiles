@@ -32,6 +32,7 @@ set showmatch " matching braces
 set noshowmode " airline does this already
 set noswapfile " 21. century, yay
 set gdefault " substitution is global by default, specify g to reverse
+set lazyredraw " don't redraw while executing a macro
 set cryptmethod=blowfish
 
 "" persistent undo and backup
