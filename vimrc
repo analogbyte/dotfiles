@@ -25,7 +25,8 @@ set mousehide " no mouse
 set wildmenu " menu when tab completing commands
 set nostartofline " don't move the coursor to the beginning of the line
 set foldmethod=marker " fold by marker
-set scrolloff=11 " minimum lines to the screens end
+let my_scrolloff_value=16
+let &scrolloff=my_scrolloff_value " minimum lines to the screens end
 set autochdir " always be in the right directory
 set pastetoggle=<F12> " toggle paste
 set showmatch " matching braces
@@ -181,7 +182,7 @@ vnoremap <leader>s :!sort<cr>
 vnoremap <leader>c :!column -t<cr>
 
 " show file in continuous columns
-nnoremap <silent> <leader>cm zR :<C-u>NumbersDisable<cr>:set nornu<cr>:set nu<cr>:set scrolloff=0<cr>:let @z=&so<cr>:bo vs<cr>Ljzt:setl scb<cr><C-w>p :setl scrollbind<cr>:setl nowrap<cr>:let &so=@z<cr>
+nnoremap <silent> <leader>cm zR :<C-u>NumbersDisable<cr>:set nornu<cr>:set nu<cr>:let &scrolloff=0<cr>:let @z=&so<cr>:bo vs<cr>Ljzt:setl scb<cr><C-w>p :setl scrollbind<cr>:setl nowrap<cr>:let &so=@z<cr>:let &scrolloff=my_scrolloff_value<cr>
 
 "" }}}
 
