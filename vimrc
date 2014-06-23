@@ -208,7 +208,7 @@ NeoBundle 'vimwiki/vimwiki'
 NeoBundle 'airblade/vim-gitgutter'
 
 " minor tweaks
-NeoBundle 'Valloric/ListToggle' "toggle quickfix list
+NeoBundle 'milkypostman/vim-togglelist' "toggle quickfix list
 NeoBundle 'tomtom/tcomment_vim' "toggle comments according to ft (mapping: gc)
 
 " movements and stuff
@@ -244,7 +244,6 @@ NeoBundle 'davidhalter/jedi-vim'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'myusuf3/numbers.vim'
 NeoBundle 'Yggdroot/indentLine'
-NeoBundle 'ivyl/vim-bling'
 
 " colorschemes
 NeoBundleLazy 'nanotech/jellybeans.vim'
@@ -294,13 +293,17 @@ let NERDTreeMouseMode=2
 let NERDTreeShowHidden=1
 
 " Tagbar
+let g:tagbar_left = 1
+let g:tagbar_width = 30
+let g:tagbar_autofocus = 1
+let g:tagbar_zoomwidth = 0
 noremap <silent><leader>t :Tagbar<Cr>
 
 " Colorscheme from bundle (needs to come after its Bundle line)
-"NeoBundleSource jellybeans.vim
-"colorscheme jellybeans
-NeoBundleSource wombat256.vim
-colorscheme wombat256mod
+NeoBundleSource jellybeans.vim
+colorscheme jellybeans
+"NeoBundleSource wombat256.vim
+"colorscheme wombat256mod
 
 " Airline
 let g:airline#extensions#tabline#enabled = 1
@@ -328,11 +331,6 @@ highlight GitGutterChange ctermbg=232 ctermfg=yellow
 highlight GitGutterDelete ctermbg=232 ctermfg=red
 highlight GitGutterChangeDelete ctermbg=232 ctermfg=red
 noremap <silent><leader>g :GitGutterToggle<Cr>
-
-" crtl-p
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
-let g:ctrlp_use_caching = 0
-nnoremap <silent><Leader>o :CtrlP<cr>
 
 " Gundo
 nnoremap <silent><leader>u :GundoToggle<Cr>
