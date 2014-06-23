@@ -171,7 +171,7 @@ nmap <silent> <c-h> :wincmd h<CR>
 nmap <silent> <c-l> :wincmd l<CR>
 
 " move char to the end of the line, useful for closing stuff
-nnoremap zl :let @z=@"<cr>x$p:let @"=@z<cr>
+nnoremap wl :let @z=@"<cr>x$p:let @"=@z<cr>
 
 " sorting of lines (python imports)
 nnoremap <leader>s vip:!sort<cr>
