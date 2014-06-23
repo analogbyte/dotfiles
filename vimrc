@@ -181,8 +181,19 @@ vnoremap <leader>s :!sort<cr>
 " align selection in columns
 vnoremap <leader>c :!column -t<cr>
 
-" show file in continuous columns
-nnoremap <silent> <leader>cm zR :<C-u>NumbersDisable<cr>:set nornu<cr>:set nu<cr>:let &scrolloff=0<cr>:let @z=&so<cr>:bo vs<cr>Ljzt:setl scb<cr><C-w>p :setl scrollbind<cr>:setl nowrap<cr>:let &so=@z<cr>:let &scrolloff=my_scrolloff_value<cr>
+" show file in continuous mode
+"" open all folds
+"" disable dynamic numbers plugin
+"" disable wrap in the first window, because this kills the sync
+"" disable relative numbers
+"" ensure enabled numbers
+"" temorary scrolloff=0
+"" open the current buffer in a vertical split
+"" move our view and set scrollbind in the new split
+"" move back to the old split
+"" set scrollbind in this split, too
+"" reset scrolloff to whatever it was
+nnoremap <silent> <leader>cm zR:<C-u>NumbersDisable<cr>:setl nowrap<cr>:set nornu<cr>:set nu<cr>:let &scrolloff=0<cr>:bo vs<cr>Ljzt:setl scrollbind<cr><C-w>p:setl scrollbind<cr>:let &scrolloff=my_scrolloff_value<cr>
 
 "" }}}
 
