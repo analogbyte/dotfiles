@@ -349,10 +349,10 @@ let g:jedi#goto_assignments_command = "<leader>a"
 " GitGutter
 let g:gitgutter_enabled = 0
 highlight clear SignColumn
-highlight GitGutterAdd ctermbg=232 ctermfg=green
-highlight GitGutterChange ctermbg=232 ctermfg=yellow
-highlight GitGutterDelete ctermbg=232 ctermfg=red
-highlight GitGutterChangeDelete ctermbg=232 ctermfg=red
+highlight GitGutterAdd ctermbg=233 ctermfg=green
+highlight GitGutterChange ctermbg=233 ctermfg=yellow
+highlight GitGutterDelete ctermbg=233 ctermfg=red
+highlight GitGutterChangeDelete ctermbg=233 ctermfg=red
 noremap <silent><leader>g :GitGutterToggle<Cr>
 
 " Gundo
