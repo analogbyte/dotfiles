@@ -31,6 +31,8 @@ set pastetoggle=<F12> " toggle paste
 set showmatch " matching braces
 set noshowmode " airline does this already
 set noswapfile " 21. century, yay
+set gdefault " substitution is global by default, specify g to reverse
+set cryptmethod=blowfish
 
 "" persistent undo and backup
 set history=1000
@@ -176,6 +178,9 @@ vnoremap <leader>s :!sort<cr>
 
 " align selection in columns
 vnoremap <leader>c :!column -t<cr>
+
+" show file in continuous columns
+nnoremap <silent> <leader>cm zR :<C-u>NumbersDisable<cr>:set nornu<cr>:set nu<cr>:set scrolloff=0<cr>:let @z=&so<cr>:bo vs<cr>Ljzt:setl scb<cr><C-w>p :setl scrollbind<cr>:setl nowrap<cr>:let &so=@z<cr>
 
 "" }}}
 
