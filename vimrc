@@ -48,6 +48,7 @@ set textwidth=0
 set wrapmargin=0
 
 "" search
+set ignorecase
 set smartcase
 set hlsearch
 set incsearch
@@ -173,6 +174,9 @@ nnoremap zl :let @z=@"<cr>x$p:let @"=@z<cr>
 nnoremap <leader>s vip:!sort<cr>
 vnoremap <leader>s :!sort<cr>
 
+" align selection in columns
+vnoremap <leader>c :!column -t<cr>
+
 "" }}}
 
 "####################################################################
@@ -243,7 +247,6 @@ NeoBundle 'davidhalter/jedi-vim'
 " visual stuff
 NeoBundle 'bling/vim-airline'
 NeoBundle 'myusuf3/numbers.vim'
-NeoBundle 'Yggdroot/indentLine'
 
 " colorschemes
 NeoBundleLazy 'nanotech/jellybeans.vim'
@@ -264,23 +267,25 @@ NeoBundleCheck
 "####################################################################
 
 " Unite.vim
-call unite#custom#profile('default', 'ignorecase', 1)
-call unite#custom#profile('default', 'context', {
-\   'winheight': 10,
-\   'direction': 'botright',
-\ })
+let g:unite_split_rule = "botright"
+let g:unite_force_overwrite_statusline = 0
+let g:unite_winheight = 10
 " replace ctrl-p
-nnoremap <C-p> :Unite -start-insert file_rec/async<cr>
-" ack stuff, does not quite replace ack.vim
-let g:unite_source_grep_command = 'ack'
-let g:unite_source_grep_default_opts = '-i --nogroup --nocolor -H'
-nnoremap <leader>/ :Unite grep:.<cr>
-nnoremap <silent><leader><leader> :<C-u>UniteResume<CR>
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+nnoremap <leader>o :<C-u>Unite -start-insert file_rec/async<cr>
+" ack
+if executable('ack') || executable('ack-grep')
+    let g:unite_source_grep_command=executable('ack') ? 'ack' : 'ack-grep'
+    let g:unite_source_grep_default_opts='-i --nogroup --nocolor -H'
+    let g:unite_source_grep_recursive_opt=''
+endif
+nnoremap <leader>/ :<C-u>Unite grep:.<cr>
+nnoremap <silent><leader><leader> :<C-u>UniteResume<cr>
 " yankring
 let g:unite_source_history_yank_enable = 1
-nnoremap <leader>y :Unite history/yank<cr>
+nnoremap <leader>y :<C-u>Unite history/yank<cr>
 " buffer switching, very good when many buffers are open
-nnoremap <leader>s :Unite -quick-match buffer<cr>
+nnoremap <leader>s :<C-u>Unite -quick-match buffer<cr>
 
 " NERDTree
 nnoremap <silent><leader>f :NERDTreeToggle<Cr>
@@ -334,9 +339,6 @@ noremap <silent><leader>g :GitGutterToggle<Cr>
 
 " Gundo
 nnoremap <silent><leader>u :GundoToggle<Cr>
-
-" indentLine
-let g:indentLine_color_term = 239
 
 " vimwiki
 nmap <Leader>wn <Plug>VimwikiNextLink
