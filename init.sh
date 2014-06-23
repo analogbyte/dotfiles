@@ -1,3 +1,4 @@
+#!/bin/bash
 mkdir -p ~/.backup                      # for my vimrc
 
 src_dir="`dirname \"$0\"`"              # relative path
