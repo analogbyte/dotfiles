@@ -172,7 +172,7 @@ nmap <silent> <c-h> :wincmd h<CR>
 nmap <silent> <c-l> :wincmd l<CR>
 
 " move char to the end of the line, useful for closing stuff
-nnoremap wl :let @z=@"<cr>x$p:let @"=@z<cr>
+nnoremap <leader>z :let @z=@"<cr>x$p:let @"=@z<cr>
 
 " sorting of lines (python imports)
 nnoremap <leader>s vip:!sort<cr>
@@ -269,6 +269,7 @@ NeoBundle 'myusuf3/numbers.vim'
 " colorschemes
 NeoBundleLazy 'nanotech/jellybeans.vim'
 NeoBundleLazy 'vim-scripts/wombat256.vim'
+NeoBundleLazy 'blueyed/vim-colors-solarized'
 
 " syntax
 au BufRead,BufNewFile *.sls set filetype=sls
@@ -323,8 +324,13 @@ let g:tagbar_zoomwidth = 0
 noremap <silent><leader>t :Tagbar<Cr>
 
 " Colorscheme from bundle (needs to come after its Bundle line)
-NeoBundleSource jellybeans.vim
-colorscheme jellybeans
+NeoBundleSource vim-colors-solarized
+let g:solarized_termcolors = 256
+let g:solarized_underline = 0
+let g:solarized_contrast = "high"
+colorscheme solarized
+"NeoBundleSource jellybeans.vim
+"colorscheme jellybeans
 "NeoBundleSource wombat256.vim
 "colorscheme wombat256mod
 
@@ -333,7 +339,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline#extensions#tabline#fnamecollapse = 0
-let g:airline_exclude_preview=1
+let g:airline_exclude_preview = 1
+let g:airline_theme = 'solarized'
 
 " Seek
 let g:seek_subst_disable = 1
@@ -349,10 +356,10 @@ let g:jedi#goto_assignments_command = "<leader>a"
 " GitGutter
 let g:gitgutter_enabled = 0
 highlight clear SignColumn
-highlight GitGutterAdd ctermbg=233 ctermfg=green
-highlight GitGutterChange ctermbg=233 ctermfg=yellow
-highlight GitGutterDelete ctermbg=233 ctermfg=red
-highlight GitGutterChangeDelete ctermbg=233 ctermfg=red
+highlight GitGutterAdd ctermbg=235 ctermfg=green
+highlight GitGutterChange ctermbg=235 ctermfg=yellow
+highlight GitGutterDelete ctermbg=235 ctermfg=red
+highlight GitGutterChangeDelete ctermbg=235 ctermfg=red
 noremap <silent><leader>g :GitGutterToggle<Cr>
 
 " Gundo
