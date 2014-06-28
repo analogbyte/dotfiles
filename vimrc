@@ -27,7 +27,7 @@ set nostartofline " don't move the coursor to the beginning of the line
 set foldmethod=marker " fold by marker
 let my_scrolloff_value=16
 let &scrolloff=my_scrolloff_value " minimum lines to the screens end
-set autochdir " always be in the right directory
+set noautochdir " always be in the right directory
 set pastetoggle=<F12> " toggle paste
 set showmatch " matching braces
 set noshowmode " airline does this already
@@ -173,6 +173,7 @@ nmap <silent> <c-l> :wincmd l<CR>
 
 " move char to the end of the line, useful for closing stuff
 nnoremap <leader>z :let @z=@"<cr>x$p:let @"=@z<cr>
+nnoremap <leader>m :cd %:p:h<cr>
 
 " sorting of lines (python imports)
 nnoremap <leader>s vip:!sort<cr>
@@ -269,7 +270,7 @@ NeoBundle 'myusuf3/numbers.vim'
 " colorschemes
 NeoBundleLazy 'nanotech/jellybeans.vim'
 NeoBundleLazy 'vim-scripts/wombat256.vim'
-NeoBundleLazy 'blueyed/vim-colors-solarized'
+NeoBundleLazy 'zeis/vim-kolor'
 
 " syntax
 au BufRead,BufNewFile *.sls set filetype=sls
@@ -324,11 +325,8 @@ let g:tagbar_zoomwidth = 0
 noremap <silent><leader>t :Tagbar<Cr>
 
 " Colorscheme from bundle (needs to come after its Bundle line)
-NeoBundleSource vim-colors-solarized
-let g:solarized_termcolors = 256
-let g:solarized_underline = 0
-let g:solarized_contrast = "high"
-colorscheme solarized
+NeoBundleSource vim-kolor
+colorscheme kolor
 "NeoBundleSource jellybeans.vim
 "colorscheme jellybeans
 "NeoBundleSource wombat256.vim
@@ -340,7 +338,6 @@ let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline#extensions#tabline#fnamecollapse = 0
 let g:airline_exclude_preview = 1
-let g:airline_theme = 'solarized'
 
 " Seek
 let g:seek_subst_disable = 1
@@ -356,10 +353,10 @@ let g:jedi#goto_assignments_command = "<leader>a"
 " GitGutter
 let g:gitgutter_enabled = 0
 highlight clear SignColumn
-highlight GitGutterAdd ctermbg=235 ctermfg=green
-highlight GitGutterChange ctermbg=235 ctermfg=yellow
-highlight GitGutterDelete ctermbg=235 ctermfg=red
-highlight GitGutterChangeDelete ctermbg=235 ctermfg=red
+highlight GitGutterAdd ctermbg=234 ctermfg=green
+highlight GitGutterChange ctermbg=234 ctermfg=yellow
+highlight GitGutterDelete ctermbg=234 ctermfg=red
+highlight GitGutterChangeDelete ctermbg=234 ctermfg=red
 noremap <silent><leader>g :GitGutterToggle<Cr>
 
 " Gundo
