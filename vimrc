@@ -12,6 +12,7 @@ scriptencoding utf-8
 syntax on
 set synmaxcol=512
 filetype indent plugin on
+runtime macros/matchit.vim
 
 "" system
 set enc=utf-8
@@ -27,13 +28,14 @@ set nostartofline " don't move the coursor to the beginning of the line
 set foldmethod=marker " fold by marker
 let my_scrolloff_value=16
 let &scrolloff=my_scrolloff_value " minimum lines to the screens end
-set noautochdir " always be in the right directory
 set pastetoggle=<F12> " toggle paste
 set showmatch " matching braces
 set noshowmode " airline does this already
 set noswapfile " 21. century, yay
 set gdefault " substitution is global by default, specify g to reverse
 set lazyredraw " don't redraw while executing a macro
+set autoread " read changed files
+set autochdir " pwd follows files
 set cryptmethod=blowfish
 
 "" persistent undo and backup
@@ -142,10 +144,6 @@ nnoremap gk k
 vnoremap < <gv
 vnoremap > >gv
 
-" replace dollar and acute
-nnoremap B ^
-nnoremap E $
-
 " highlight last inserted text
 nnoremap gV `[v`]
 
@@ -166,10 +164,10 @@ nnoremap <silent><S-Tab> :bp<Cr>
 cmap w!! w !sudo tee %
 
 " splits
-nmap <silent> <c-k> :wincmd k<CR>
-nmap <silent> <c-j> :wincmd j<CR>
-nmap <silent> <c-h> :wincmd h<CR>
-nmap <silent> <c-l> :wincmd l<CR>
+" nmap <silent> <c-k> :wincmd k<CR>
+" nmap <silent> <c-j> :wincmd j<CR>
+" nmap <silent> <c-h> :wincmd h<CR>
+" nmap <silent> <c-l> :wincmd l<CR>
 
 " move char to the end of the line, useful for closing stuff
 nnoremap <leader>z :let @z=@"<cr>x$p:let @"=@z<cr>
@@ -227,7 +225,6 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'sjl/gundo.vim'
-NeoBundle 'vimwiki/vimwiki'
 NeoBundle 'airblade/vim-gitgutter'
 
 " minor tweaks
@@ -271,6 +268,9 @@ NeoBundle 'myusuf3/numbers.vim'
 NeoBundleLazy 'nanotech/jellybeans.vim'
 NeoBundleLazy 'vim-scripts/wombat256.vim'
 NeoBundleLazy 'zeis/vim-kolor'
+
+NeoBundle 'terryma/vim-smooth-scroll'
+NeoBundle 'christoomey/vim-tmux-navigator'
 
 " syntax
 au BufRead,BufNewFile *.sls set filetype=sls
@@ -362,9 +362,11 @@ noremap <silent><leader>g :GitGutterToggle<Cr>
 " Gundo
 nnoremap <silent><leader>u :GundoToggle<Cr>
 
-" vimwiki
-nmap <Leader>wn <Plug>VimwikiNextLink
-nmap <Leader>wp <Plug>VimwikiPrevLink
+" smoothscroll
+noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<cr>
+noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<cr>
+noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<cr>
+noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<cr>
 
 "" }}}
 
