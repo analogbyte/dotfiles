@@ -164,10 +164,10 @@ nnoremap <silent><S-Tab> :bp<Cr>
 cmap w!! w !sudo tee %
 
 " splits
-" nmap <silent> <c-k> :wincmd k<CR>
-" nmap <silent> <c-j> :wincmd j<CR>
-" nmap <silent> <c-h> :wincmd h<CR>
-" nmap <silent> <c-l> :wincmd l<CR>
+nmap <silent> <c-k> :wincmd k<CR>
+nmap <silent> <c-j> :wincmd j<CR>
+nmap <silent> <c-h> :wincmd h<CR>
+nmap <silent> <c-l> :wincmd l<CR>
 
 " move char to the end of the line, useful for closing stuff
 nnoremap <leader>z :let @z=@"<cr>x$p:let @"=@z<cr>
@@ -270,7 +270,6 @@ NeoBundleLazy 'vim-scripts/wombat256.vim'
 NeoBundleLazy 'zeis/vim-kolor'
 
 NeoBundle 'terryma/vim-smooth-scroll'
-NeoBundle 'christoomey/vim-tmux-navigator'
 
 " syntax
 au BufRead,BufNewFile *.sls set filetype=sls
