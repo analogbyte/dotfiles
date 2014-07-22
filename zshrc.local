@@ -57,7 +57,7 @@ export MANWIDTH=${MANWIDTH:-80}
 # remote host. http://superuser.com/a/638002
 ssh() {
     if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
-            tmux rename-window "$*"
+            tmux rename-window "${@: -1}"
             command ssh "$@"
             tmux set-window-option automatic-rename "on" 1>/dev/null
     else
@@ -66,7 +66,7 @@ ssh() {
 }
 mosh() {
     if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
-            tmux rename-window "$*"
+            tmux rename-window "${@: -1}"
             command mosh "$@"
             tmux set-window-option automatic-rename "on" 1>/dev/null
     else
