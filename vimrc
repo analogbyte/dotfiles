@@ -36,7 +36,6 @@ set gdefault " substitution is global by default, specify g to reverse
 set lazyredraw " don't redraw while executing a macro
 set autoread " read changed files
 set autochdir " pwd follows files
-set cryptmethod=blowfish
 
 "" persistent undo and backup
 set history=1000
