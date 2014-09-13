@@ -11,13 +11,16 @@ for file in `ls $src_dir`; do
     fi
 done
 
+# in addition, link my vimrc to .nvimrc
+ln -snf $src_dir/vimrc ~/.nvimrc
+
 # get the grml projects zshrc
 wget --quiet -O ~/.zshrc http://git.grml.org/f/grml-etc-core/etc/zsh/zshrc
 
 # make user check if everything is installed, protip: `dotfiles/init.sh`
 if which apt-get &> /dev/null; then
-    echo sudo apt-get install vim-nox tmux git zsh keychain gnupg-agent exuberant-ctags
+    echo sudo apt-get install vim-nox tmux git zsh exuberant-ctags
 fi
 if which pacman &> /dev/null; then
-    echo sudo pacman -S gvim tmux git zsh keychain gnupg ctags
+    echo sudo pacman -S gvim tmux git zsh ctags
 fi
