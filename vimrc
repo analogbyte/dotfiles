@@ -16,7 +16,8 @@ runtime macros/matchit.vim
 
 "" system
 set enc=utf-8
-set shell=/bin/zsh
+let shell = system("which zsh")
+let &shell=shell[0:len(shell)-2]
 set spelllang=de
 set backspace=indent,eol,start
 
