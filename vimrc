@@ -182,7 +182,7 @@ nmap <silent> <C-h> :wincmd h<cr>
 nmap <silent> <C-l> :wincmd l<cr>
 
 " jump to buffer
-nnoremap <leader><leader> <C-^>
+"nnoremap <leader><leader> <C-^>
 nnoremap <leader>1 :1b<cr>
 nnoremap <leader>2 :2b<cr>
 nnoremap <leader>3 :3b<cr>
@@ -295,6 +295,7 @@ NeoBundleLazy 'vim-scripts/wombat256.vim'
 NeoBundleLazy 'zeis/vim-kolor'
 
 NeoBundle 'terryma/vim-smooth-scroll'
+NeoBundle 'thinca/vim-localrc'
 
 " syntax
 au BufRead,BufNewFile *.sls set filetype=sls
@@ -329,6 +330,8 @@ let g:unite_source_history_yank_enable = 1
 nnoremap <leader>y :<C-u>Unite history/yank<cr>
 " buffer switching, very good when many buffers are open
 nnoremap <leader>s :<C-u>Unite -quick-match buffer<cr>
+" reopen unite
+nnoremap <silent><leader><leader> :<C-u>UniteResume<cr>
 
 " NERDTree
 nnoremap <silent><leader>f :NERDTreeToggle<Cr>
@@ -392,7 +395,3 @@ noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<cr>
 noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<cr>
 
 "" }}}
-
-if filereadable('.vimrc.local')
-    source .vimrc.local
-endif
