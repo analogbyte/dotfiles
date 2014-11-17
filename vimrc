@@ -334,7 +334,7 @@ nnoremap <leader>s :<C-u>Unite -quick-match buffer<cr>
 nnoremap <silent><leader>f :NERDTreeToggle<Cr>
 let NERDTreeShowBookmarks=1
 let NERDTreeHijackNetrw=1
-let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr', '\.o']
 let NERDTreeChDirMode=0
 let NERDTreeQuitOnOpen=1
 let NERDTreeMouseMode=2
