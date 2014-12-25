@@ -133,10 +133,8 @@ endfunction
 vmap <silent> <expr> p <sid>Repl()
 
 " quickfix usage
-nnoremap [q :cprev<cr>
-nnoremap ]q :cnext<cr>
-nnoremap {q :cpfile<cr>
-nnoremap }q :cnfile<cr>
+nnoremap <leader>qp :cprev<cr>
+nnoremap <leader>qn :cnext<cr>
 
 " jump to visual lines
 nnoremap j gj
