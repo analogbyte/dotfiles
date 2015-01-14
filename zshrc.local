@@ -6,7 +6,6 @@ fi
 # basic stuff
 setopt vi
 bindkey '\e.' insert-last-word # make alt+dot work in vim mode
-export TERM="screen-256color"
 
 # virtualenvs
 export WORKON_HOME=~/.envs
