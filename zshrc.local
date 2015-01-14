@@ -2,6 +2,11 @@ if ! [ -n "$SSH_CLIENT" ] && which tmux 2>&1 >/dev/null; then
     test -z "$TMUX" && (tmux attach || tmux new-session)
 fi
 
+if [[ -S "$SSH_AUTH_SOCK" && ! -h "$SSH_AUTH_SOCK" ]]; then
+    ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock;
+fi
+export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock;
+
 # basic stuff
 setopt vi
 bindkey '\e.' insert-last-word # make alt+dot work in vim mode
