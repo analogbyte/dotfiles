@@ -316,13 +316,14 @@ let g:unite_winheight = 10
 " replace ctrl-p
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 nnoremap <leader>o :<C-u>Unite -start-insert file_rec/async<cr>
-" ack
-if executable('ack') || executable('ack-grep')
-    let g:unite_source_grep_command=executable('ack') ? 'ack' : 'ack-grep'
-    let g:unite_source_grep_default_opts='-i --nogroup --nocolor -H'
+" ag
+if executable('ag')
+    let g:unite_source_grep_command='ag'
+    let g:unite_source_grep_default_opts='--nocolor --nogroup -S'
     let g:unite_source_grep_recursive_opt=''
 endif
 nnoremap <leader>/ :<C-u>Unite grep:.<cr>
+command T Unite grep:.::TODO\:\|FIXME\:\|NOTE\:<cr>
 " yankring
 let g:unite_source_history_yank_enable = 1
 nnoremap <leader>y :<C-u>Unite history/yank<cr>
