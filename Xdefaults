@@ -40,7 +40,4 @@ urxvt*keysym.End:        \033[4~
 
 urxvt*iso14755: False
 
-urxvt.perl-ext:
-urxvt.perl-ext-common:
-
 Xft.rgba: none
