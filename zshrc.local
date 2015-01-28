@@ -75,6 +75,8 @@ mosh() {
 DIRSTACKSIZE=8
 setopt autopushd pushdminus pushdsilent pushdtohome
 
+export NOPRECMD=1
+
 # aliases
 alias dh='dirs -v'
 alias -g L=' | less'
