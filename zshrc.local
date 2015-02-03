@@ -57,14 +57,14 @@ ssh() {
     trap "tmux rename-window 'local'" INT
     test -n "$TMUX" && tmux rename-window "$(echo ${@: -1} | cut -d '@' -f 2)"
     command ssh "$@"
-    tmux rename-window 'local'
+    tmux rename-window -t:$(echo ${@: -1} | cut -d '@' -f 2) 'local'
     trap - INT
 }
 mosh() {
     trap "tmux rename-window 'local'" INT
     test -n "$TMUX" && tmux rename-window "$(echo ${@: -1} | cut -d '@' -f 2)"
     command mosh "$@"
-    tmux rename-window 'local'
+    tmux -t "$(echo ${@: -1} | cut -d '@' -f 2)" rename-window 'local'
     trap - INT
 }
 
