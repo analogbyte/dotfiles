@@ -1,5 +1,5 @@
-# autostart tmux when not connecting via ssh
-if ! [ -n "$SSH_CLIENT" ] && which tmux 2>&1 >/dev/null; then
+# autostart tmux
+if which tmux 2>&1 >/dev/null; then
     test -z "$TMUX" && (tmux attach || tmux new-session)
 fi
 
@@ -54,28 +54,18 @@ export MANWIDTH=${MANWIDTH:-80}
 # ssh/mosh wrapper that rename current tmux window to the hostname of the
 # remote host. http://superuser.com/a/638002
 ssh() {
-    trap "tmux rename-window 'zsh'" INT
-    trap "tmux rename-window 'zsh'" EXIT
-    if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
-            tmux rename-window "$(echo ${@: -1} | cut -d '@' -f 2)"
-            command ssh "$@"
-    else
-            command ssh "$@"
-    fi
+    trap "tmux rename-window 'local'" INT
+    test -n "$TMUX" && tmux rename-window "$(echo ${@: -1} | cut -d '@' -f 2)"
+    command ssh "$@"
+    tmux rename-window 'local'
     trap - INT
-    trap - EXIT
 }
 mosh() {
-    trap "tmux rename-window 'zsh'" INT EXIT
-    trap "tmux rename-window 'zsh'" EXIT
-    if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
-            tmux rename-window "$(echo ${@: -1} | cut -d '@' -f 2)"
-            command mosh "$@"
-    else
-            command mosh "$@"
-    fi
+    trap "tmux rename-window 'local'" INT
+    test -n "$TMUX" && tmux rename-window "$(echo ${@: -1} | cut -d '@' -f 2)"
+    command mosh "$@"
+    tmux rename-window 'local'
     trap - INT
-    trap - EXIT
 }
 
 DIRSTACKSIZE=8
