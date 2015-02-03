@@ -54,22 +54,28 @@ export MANWIDTH=${MANWIDTH:-80}
 # ssh/mosh wrapper that rename current tmux window to the hostname of the
 # remote host. http://superuser.com/a/638002
 ssh() {
+    trap "tmux rename-window 'zsh'" INT
+    trap "tmux rename-window 'zsh'" EXIT
     if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
-            tmux rename-window "${@: -1}"
+            tmux rename-window "$(echo ${@: -1} | cut -d '@' -f 2)"
             command ssh "$@"
-            tmux set-window-option automatic-rename "on" 1>/dev/null
     else
             command ssh "$@"
     fi
+    trap - INT
+    trap - EXIT
 }
 mosh() {
+    trap "tmux rename-window 'zsh'" INT EXIT
+    trap "tmux rename-window 'zsh'" EXIT
     if [ "$(ps -p $(ps -p $$ -o ppid=) -o comm=)" = "tmux" ]; then
-            tmux rename-window "${@: -1}"
+            tmux rename-window "$(echo ${@: -1} | cut -d '@' -f 2)"
             command mosh "$@"
-            tmux set-window-option automatic-rename "on" 1>/dev/null
     else
             command mosh "$@"
     fi
+    trap - INT
+    trap - EXIT
 }
 
 DIRSTACKSIZE=8
