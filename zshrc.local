@@ -52,20 +52,28 @@ bindkey -M isearch . self-insert
 export MANWIDTH=${MANWIDTH:-80}
 
 # ssh/mosh wrapper that rename current tmux window to the hostname of the
-# remote host. http://superuser.com/a/638002
+# remote host
 ssh() {
-    trap "tmux rename-window 'local'" INT
-    test -n "$TMUX" && tmux rename-window "$(echo ${@: -1} | cut -d '@' -f 2)"
-    command ssh "$@"
-    tmux rename-window -t:$(echo ${@: -1} | cut -d '@' -f 2) 'local'
-    trap - INT
+    if [[ $(tmux display-message -p '#W') = "local" ]]; then
+        trap "tmux rename-window 'local'" INT PIPE EXIT
+        test -n "$TMUX" && tmux rename-window "$(echo "${@: -1}" | cut -d '@' -f 2)"
+        command ssh "$@"
+        tmux rename-window -t:"$(echo "${@: -1}" | cut -d '@' -f 2)" 'local'
+        trap - INT PIPE EXIT
+    else
+        command ssh "$@"
+    fi
 }
 mosh() {
-    trap "tmux rename-window 'local'" INT
-    test -n "$TMUX" && tmux rename-window "$(echo ${@: -1} | cut -d '@' -f 2)"
-    command mosh "$@"
-    tmux -t "$(echo ${@: -1} | cut -d '@' -f 2)" rename-window 'local'
-    trap - INT
+    if [[ $(tmux display-message -p '#W') = "local" ]]; then
+        trap "tmux rename-window 'local'" INT PIPE EXIT
+        test -n "$TMUX" && tmux rename-window "$(echo "${@: -1}" | cut -d '@' -f 2)"
+        command mosh "$@"
+        tmux rename-window -t:"$(echo "${@: -1}" | cut -d '@' -f 2)" 'local'
+        trap - INT PIPE EXIT
+    else
+        command mosh "$@"
+    fi
 }
 
 DIRSTACKSIZE=8
