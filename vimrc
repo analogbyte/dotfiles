@@ -72,10 +72,6 @@ set ttimeoutlen=0
 set background=dark
 set t_Co=256 " force more colors
 
-" highlight the current line and column
-set cul
-set cuc
-
 " statusbar
 set cmdheight=2
 set laststatus=2
@@ -292,7 +288,7 @@ NeoBundleLazy 'nanotech/jellybeans.vim'
 NeoBundleLazy 'vim-scripts/wombat256.vim'
 NeoBundleLazy 'zeis/vim-kolor'
 
-NeoBundle 'terryma/vim-smooth-scroll'
+NeoBundle 'yonchu/accelerated-smooth-scroll'
 NeoBundle 'thinca/vim-localrc'
 
 " syntax
@@ -386,11 +382,5 @@ noremap <silent><leader>g :GitGutterToggle<Cr>
 
 " Gundo
 nnoremap <silent><leader>u :GundoToggle<Cr>
-
-" smoothscroll
-noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 0, 2)<cr>
-noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<cr>
-noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<cr>
-noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<cr>
 
 "" }}}
