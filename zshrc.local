@@ -1,6 +1,6 @@
 # autostart tmux
 if which tmux 2>&1 >/dev/null; then
-    test -z "$TMUX" && (tmux attach || tmux new-session)
+    test -z "$TMUX" && (tmux attach -t base || tmux new -s base)
 fi
 
 # basic stuff
@@ -80,11 +80,16 @@ DIRSTACKSIZE=8
 setopt autopushd pushdminus pushdsilent pushdtohome
 
 # aliases
-alias dh='dirs -v'
+alias dh='dirs -v' # show dirstack
+# global aliases
 alias -g L=' | less'
 alias -g G=' | grep'
 alias -g A=' | ag'
 alias -g V=' | vim -'
+# convenience
 alias t=task
+alias tmuxlink="tmux link-window -k -s base:1 -t 1"
+
+# change conflicting grml default
 unalias ag
 salias agu="apt-get upgrade"
