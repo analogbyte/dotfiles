@@ -70,7 +70,6 @@ set ttimeoutlen=0
 "####################################################################
 " colorscheme
 set background=dark
-set t_Co=256 " force more colors
 
 " statusbar
 set cmdheight=2
@@ -98,13 +97,6 @@ au BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 
 " arduino syntax highlightning
 au BufRead,BufNewFile *.ino set filetype=c
-
-" column hl only in active window and in non-insert modes
-augroup cuc
-    au!
-    au WinLeave,InsertEnter * set nocuc
-    au WinEnter,InsertLeave * set cuc
-augroup END
 
 " grow and shrink splits with the window
 au VimResized * :wincmd =
@@ -348,6 +340,14 @@ noremap <silent><leader>t :Tagbar<Cr>
 " Colorscheme from bundle (needs to come after its Bundle line)
 NeoBundleSource vim-kolor
 colorscheme kolor
+set cul
+set cuc
+augroup cuc
+    au!
+    au WinLeave,InsertEnter * set nocuc
+    au WinEnter,InsertLeave * set cuc
+augroup END
+highlight Search ctermbg=236
 "NeoBundleSource jellybeans.vim
 "colorscheme jellybeans
 "NeoBundleSource wombat256.vim
