@@ -286,7 +286,6 @@ NeoBundle 'myusuf3/numbers.vim'
 
 " colorschemes
 NeoBundleLazy 'nanotech/jellybeans.vim'
-NeoBundleLazy 'vim-scripts/wombat256.vim'
 NeoBundleLazy 'zeis/vim-kolor'
 
 NeoBundle 'yonchu/accelerated-smooth-scroll'
@@ -351,8 +350,6 @@ noremap <silent><leader>t :Tagbar<Cr>
 " colorscheme kolor
 NeoBundleSource jellybeans.vim
 colorscheme jellybeans
-" NeoBundleSource wombat256.vim
-" colorscheme wombat256mod
 
 " Airline
 let g:airline#extensions#tabline#enabled = 1
@@ -375,10 +372,11 @@ let g:jedi#goto_assignments_command = "<leader>a"
 " GitGutter
 let g:gitgutter_enabled = 0
 highlight clear SignColumn
-highlight GitGutterAdd ctermbg=234 ctermfg=green
-highlight GitGutterChange ctermbg=234 ctermfg=yellow
-highlight GitGutterDelete ctermbg=234 ctermfg=red
-highlight GitGutterChangeDelete ctermbg=234 ctermfg=red
+" use 233 as termbg for jellybeans, 234 for kolor
+highlight GitGutterAdd ctermbg=233 ctermfg=green
+highlight GitGutterChange ctermbg=233 ctermfg=yellow
+highlight GitGutterDelete ctermbg=233 ctermfg=red
+highlight GitGutterChangeDelete ctermbg=233 ctermfg=red
 noremap <silent><leader>g :GitGutterToggle<Cr>
 
 " Gundo
