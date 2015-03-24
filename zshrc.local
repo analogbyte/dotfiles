@@ -1,5 +1,5 @@
 # autostart tmux
-if which tmux 2>&1 >/dev/null; then
+if which tmux &> /dev/null; then
     test -z "$TMUX" && (tmux attach -t base || tmux new -s base)
 fi
 
@@ -54,9 +54,9 @@ export MANWIDTH=${MANWIDTH:-80}
 # ssh/mosh wrapper that rename current tmux window to the hostname of the
 # remote host
 ssh() {
-    if [[ $(tmux display-message -p '#W') = "local" ]]; then
-        trap "tmux rename-window 'local'" INT PIPE EXIT
-        test -n "$TMUX" && tmux rename-window "$(echo "${@: -1}" | cut -d '@' -f 2)"
+    if [[ -n "$TMUX" && $(tmux display-message -p '#W') = "local" ]]; then
+        trap "true" INT PIPE EXIT
+        tmux rename-window "$(echo "${@: -1}" | cut -d '@' -f 2)"
         command ssh "$@"
         tmux rename-window -t:"$(echo "${@: -1}" | cut -d '@' -f 2)" 'local'
         trap - INT PIPE EXIT
@@ -65,14 +65,22 @@ ssh() {
     fi
 }
 mosh() {
-    if [[ $(tmux display-message -p '#W') = "local" ]]; then
-        trap "tmux rename-window 'local'" INT PIPE EXIT
-        test -n "$TMUX" && tmux rename-window "$(echo "${@: -1}" | cut -d '@' -f 2)"
+    if [[ -n "$TMUX" && $(tmux display-message -p '#W') = "local" ]]; then
+        trap "true" INT PIPE EXIT
+        tmux rename-window "$(echo "${@: -1}" | cut -d '@' -f 2)"
         command mosh "$@"
         tmux rename-window -t:"$(echo "${@: -1}" | cut -d '@' -f 2)" 'local'
         trap - INT PIPE EXIT
     else
         command mosh "$@"
+    fi
+}
+
+thinklight() {
+    if grep -Fxq "255" /sys/devices/platform/thinkpad_acpi/leds/tpacpi::thinklight/brightness; then
+        echo 0 | sudo tee /sys/devices/platform/thinkpad_acpi/leds/tpacpi::thinklight/brightness &> /dev/null
+    else
+        echo 255 | sudo tee /sys/devices/platform/thinkpad_acpi/leds/tpacpi::thinklight/brightness &> /dev/null
     fi
 }
 
@@ -90,6 +98,6 @@ alias -g V=' | vim -'
 alias t=task
 alias tmuxlink="tmux link-window -k -s base:1 -t 1"
 
-# change conflicting grml default
-unalias ag
-salias agu="apt-get upgrade"
+# change conflicting grml default (ubuntu only)
+# unalias ag
+# salias agu="apt-get upgrade"
