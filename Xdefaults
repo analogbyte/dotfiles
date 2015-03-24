@@ -1,4 +1,4 @@
-! rxvt-unicode ---------------------------------------------------------------
+! set colors
 urxvt*background: #000000
 urxvt*foreground: #949494
 ! black
@@ -26,18 +26,34 @@ urxvt*color14 : #34E2E2
 urxvt*color7  : #949494
 urxvt*color15 : #c4c4c4
 
+! make ctrl-shift work for bindings
+urxvt.iso14755: false
+urxvt.iso14755_52: false
+
+! start big
 urxvt*geometry:          800x600
+
+! fonts
+urxvt*skipBuiltinGlyphs: true
 urxvt*depth:             32
-urxvt*scrollBar:         false
-urxvt*font:              xft:ubuntumono:size=11,style=regular
-urxvt*boldFont:          xft:ubuntumono:size=11,style=bold
+urxvt*font:              xft:Ubuntu Mono:size=11,style=regular
+urxvt*boldFont:          xft:Ubuntu Mono:size=11,style=bold
+urxvt*buffered:          true
 
+! show urgency vi
 urxvt*urgentOnBell:      true
-urxvt*saveLines:         32767
 
+! tmux does this for us
+urxvt*saveLines:         0
+urxvt*scrollBar:         false
+
+! home and end keys
 urxvt*keysym.Home:       \033[1~
 urxvt*keysym.End:        \033[4~
 
-urxvt*iso14755: False
-
-Xft.rgba: none
+! extensions
+urxvt.perl-ext-common: default,matcher,font-size
+urxvt.url-launcher: /usr/bin/firefox
+urxvt.matcher.button: 1
+urxvt.keysym.C-Up:     perl:font-size:increase
+urxvt.keysym.C-Down:   perl:font-size:decrease
