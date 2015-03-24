@@ -384,4 +384,6 @@ noremap <silent><leader>g :GitGutterToggle<Cr>
 " Gundo
 nnoremap <silent><leader>u :GundoToggle<Cr>
 
+" accelerated_smoothscroll
+let g:ac_smooth_scroll_enable_accelerating = 0
 "" }}}
