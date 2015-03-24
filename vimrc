@@ -71,6 +71,15 @@ set ttimeoutlen=0
 " colorscheme
 set background=dark
 
+" line and column highlights
+set cul
+set cuc
+augroup cuc
+    au!
+    au WinLeave,InsertEnter * set nocuc
+    au WinEnter,InsertLeave * set cuc
+augroup END
+
 " statusbar
 set cmdheight=2
 set laststatus=2
@@ -338,20 +347,12 @@ let g:tagbar_zoomwidth = 0
 noremap <silent><leader>t :Tagbar<Cr>
 
 " Colorscheme from bundle (needs to come after its Bundle line)
-NeoBundleSource vim-kolor
-colorscheme kolor
-set cul
-set cuc
-augroup cuc
-    au!
-    au WinLeave,InsertEnter * set nocuc
-    au WinEnter,InsertLeave * set cuc
-augroup END
-highlight Search ctermbg=236
-"NeoBundleSource jellybeans.vim
-"colorscheme jellybeans
-"NeoBundleSource wombat256.vim
-"colorscheme wombat256mod
+" NeoBundleSource vim-kolor
+" colorscheme kolor
+NeoBundleSource jellybeans.vim
+colorscheme jellybeans
+" NeoBundleSource wombat256.vim
+" colorscheme wombat256mod
 
 " Airline
 let g:airline#extensions#tabline#enabled = 1
