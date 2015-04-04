@@ -17,6 +17,8 @@ if which apt-get 2>&1 >/dev/null; then
     if [ -e "/etc/bash_completion.d/virtualenvwrapper" ]; then
         source /etc/bash_completion.d/virtualenvwrapper
     fi
+    unalias ag
+    salias agu="apt-get upgrade"
 fi
 
 if which pacman 2>&1 >/dev/null; then
@@ -76,13 +78,15 @@ mosh() {
     fi
 }
 
-thinklight() {
-    if grep -Fxq "255" /sys/devices/platform/thinkpad_acpi/leds/tpacpi::thinklight/brightness; then
-        echo 0 | sudo tee /sys/devices/platform/thinkpad_acpi/leds/tpacpi::thinklight/brightness &> /dev/null
-    else
-        echo 255 | sudo tee /sys/devices/platform/thinkpad_acpi/leds/tpacpi::thinklight/brightness &> /dev/null
-    fi
-}
+if [[ $(hostname) = "icemark" ]]; then
+    thinklight() {
+        if grep -Fxq "255" /sys/devices/platform/thinkpad_acpi/leds/tpacpi::thinklight/brightness; then
+            echo 0 | sudo tee /sys/devices/platform/thinkpad_acpi/leds/tpacpi::thinklight/brightness &> /dev/null
+        else
+            echo 255 | sudo tee /sys/devices/platform/thinkpad_acpi/leds/tpacpi::thinklight/brightness &> /dev/null
+        fi
+    }
+fi
 
 DIRSTACKSIZE=8
 setopt autopushd pushdminus pushdsilent pushdtohome
@@ -97,7 +101,3 @@ alias -g V=' | vim -'
 # convenience
 alias t=task
 alias tmuxlink="tmux link-window -k -s base:1 -t 1"
-
-# change conflicting grml default (ubuntu only)
-# unalias ag
-# salias agu="apt-get upgrade"
