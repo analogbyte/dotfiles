@@ -1,6 +1,6 @@
 # autostart tmux
 if which tmux &> /dev/null; then
-    test -z "$TMUX" && (tmux attach -t base || tmux new -s base)
+    test -z "$TMUX" && test "$TERM" != "linux" && (tmux attach -t base || tmux new -s base)
 fi
 
 # basic stuff
@@ -99,5 +99,6 @@ alias -g G=' | grep'
 alias -g A=' | ag'
 alias -g V=' | vim -'
 # convenience
+alias startx="startx -- -dpi 96"
 alias t=task
 alias tmuxlink="tmux link-window -k -s base:1 -t 1"
