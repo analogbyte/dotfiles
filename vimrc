@@ -11,7 +11,7 @@ scriptencoding utf-8
 " filetype plugin and syntax
 syntax on
 set synmaxcol=512
-filetype indent plugin on
+filetype plugin indent on
 runtime macros/matchit.vim
 
 " system
@@ -26,7 +26,7 @@ set hidden " change buffers without saving
 set mousehide " no mouse
 set wildmenu " menu when tab completing commands
 set nostartofline " don't move the coursor to the beginning of the line
-set foldmethod=marker " fold by marker
+set foldmethod=marker
 let my_scrolloff_value=16
 let &scrolloff=my_scrolloff_value " minimum lines to the screens end
 set pastetoggle=<F12> " toggle paste
@@ -37,6 +37,7 @@ set gdefault " substitution is global by default, specify g to reverse
 set lazyredraw " don't redraw while executing a macro
 set autoread " read changed files
 set autochdir " pwd follows files
+set clipboard^=unnamed " use system clipboard
 
 " persistent undo and backup
 set history=1000
@@ -46,10 +47,15 @@ set backup
 set backupdir=~/.backup/
 
 " tabs and stuff
-set nosmartindent
+set tabstop=8
+set expandtab
 set shiftwidth=4
 set softtabstop=4
-set expandtab " use spaces
+set smarttab
+set cindent
+autocmd FileType python setlocal foldmethod=indent foldlevel=99
+
+" width
 set textwidth=0
 set wrapmargin=0
 
@@ -368,6 +374,7 @@ let g:jedi#goto_assignments_command = ""
 let g:jedi#use_tabs_not_buffers = 0
 let g:jedi#popup_on_dot = 0
 let g:jedi#goto_assignments_command = "<leader>a"
+let g:jedi#show_call_signatures = 2
 
 " GitGutter
 let g:gitgutter_enabled = 0
