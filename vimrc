@@ -53,7 +53,6 @@ set shiftwidth=4
 set softtabstop=4
 set smarttab
 set cindent
-autocmd FileType python setlocal foldmethod=indent foldlevel=99
 
 " width
 set textwidth=0
