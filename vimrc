@@ -39,6 +39,10 @@ set autoread " read changed files
 set autochdir " pwd follows files
 set clipboard^=unnamed " use system clipboard
 
+" open splits in nicer locations
+set splitbelow
+set splitright
+
 " persistent undo and backup
 set history=1000
 set undofile
@@ -102,6 +106,9 @@ match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 "####################################################################
 " general auto commands {{{
 "####################################################################
+
+" no cindent for tex
+au FileType tex set nocindent
 
 " replace man with :help when editing vimrc
 au FileType vim set keywordprg=":help"
@@ -176,10 +183,14 @@ nnoremap <silent><S-Tab> :bp<cr>
 cmap w!! w !sudo tee %
 
 " splits
-nmap <silent> <C-k> :wincmd k<cr>
-nmap <silent> <C-j> :wincmd j<cr>
-nmap <silent> <C-h> :wincmd h<cr>
-nmap <silent> <C-l> :wincmd l<cr>
+nnoremap <silent> <C-k> :wincmd k<cr>
+nnoremap <silent> <C-j> :wincmd j<cr>
+nnoremap <silent> <C-h> :wincmd h<cr>
+nnoremap <silent> <C-l> :wincmd l<cr>
+nnoremap <silent> <leader><Right> :vertical resize -5<cr>
+nnoremap <silent> <leader><Down> :resize +5<cr>
+nnoremap <silent> <leader><Up> :resize -5<cr>
+nnoremap <silent> <leader><Left> :vertical resize +5<cr>
 
 " jump to buffer
 "nnoremap <leader><leader> <C-^>
