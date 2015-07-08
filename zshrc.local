@@ -78,16 +78,6 @@ mosh() {
     fi
 }
 
-if [[ $(hostname) = "icemark" ]]; then
-    thinklight() {
-        if grep -Fxq "255" /sys/devices/platform/thinkpad_acpi/leds/tpacpi::thinklight/brightness; then
-            echo 0 | sudo tee /sys/devices/platform/thinkpad_acpi/leds/tpacpi::thinklight/brightness &> /dev/null
-        else
-            echo 255 | sudo tee /sys/devices/platform/thinkpad_acpi/leds/tpacpi::thinklight/brightness &> /dev/null
-        fi
-    }
-fi
-
 DIRSTACKSIZE=8
 setopt autopushd pushdminus pushdsilent pushdtohome
 
@@ -102,3 +92,5 @@ alias -g V=' | vim -'
 alias startx="startx -- -dpi 96"
 alias t=task
 alias tmuxlink="tmux link-window -k -s base:1 -t 1"
+alias fuck='sudo $(fc -ln -1)'
+alias LESS=R # for ag: --pager=less has color
