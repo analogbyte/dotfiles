@@ -37,7 +37,7 @@ set gdefault " substitution is global by default, specify g to reverse
 set lazyredraw " don't redraw while executing a macro
 set autoread " read changed files
 set autochdir " pwd follows files
-set clipboard^=unnamed " use system clipboard
+set clipboard=unnamed " use system clipboard
 
 " open splits in nicer locations
 set splitbelow
