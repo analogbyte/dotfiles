@@ -1,15 +1,11 @@
-# autostart tmux
-if which tmux &> /dev/null; then
-    test -z "$TMUX" && test "$TERM" != "linux" && (tmux attach -t base || tmux new -s base)
-fi
-
 # basic stuff
 setopt vi
 bindkey '\e.' insert-last-word # make alt+dot work in vim mode
 
-# virtualenvs
+# virtualenv home
 export WORKON_HOME=~/.envs
 
+# debian specifics
 if which apt-get 2>&1 >/dev/null; then
     if [ -e "/usr/local/bin/virtualenvwrapper.sh" ]; then
         source /usr/local/bin/virtualenvwrapper.sh
@@ -21,6 +17,7 @@ if which apt-get 2>&1 >/dev/null; then
     salias agu="apt-get upgrade"
 fi
 
+# arch specifics
 if which pacman 2>&1 >/dev/null; then
     if [ -e "/usr/bin/virtualenvwrapper.sh" ]; then
         source /usr/bin/virtualenvwrapper.sh
@@ -55,34 +52,49 @@ export MANWIDTH=${MANWIDTH:-80}
 
 # ssh/mosh wrapper that rename current tmux window to the hostname of the
 # remote host
-ssh() {
-    if [[ -n "$TMUX" && $(tmux display-message -p '#W') = "local" ]]; then
-        trap "true" INT PIPE EXIT
-        tmux rename-window "$(echo "${@: -1}" | cut -d '@' -f 2)"
-        command ssh "$@"
-        tmux rename-window -t:"$(echo "${@: -1}" | cut -d '@' -f 2)" 'local'
-        trap - INT PIPE EXIT
-    else
-        command ssh "$@"
-    fi
-}
-mosh() {
-    if [[ -n "$TMUX" && $(tmux display-message -p '#W') = "local" ]]; then
-        trap "true" INT PIPE EXIT
-        tmux rename-window "$(echo "${@: -1}" | cut -d '@' -f 2)"
-        command mosh "$@"
-        tmux rename-window -t:"$(echo "${@: -1}" | cut -d '@' -f 2)" 'local'
-        trap - INT PIPE EXIT
-    else
-        command mosh "$@"
-    fi
+if [ -n $TMUX ]; then
+    ssh() {
+        if [[ -n "$TMUX" && $(tmux display-message -p '#W') = "local" ]]; then
+            trap "true" INT PIPE EXIT
+            tmux rename-window "$(echo "${@: -1}" | cut -d '@' -f 2)"
+            command ssh "$@"
+            tmux rename-window -t:"$(echo "${@: -1}" | cut -d '@' -f 2)" 'local'
+            trap - INT PIPE EXIT
+        else
+            command ssh "$@"
+        fi
+    }
+    mosh() {
+        if [[ -n "$TMUX" && $(tmux display-message -p '#W') = "local" ]]; then
+            trap "true" INT PIPE EXIT
+            tmux rename-window "$(echo "${@: -1}" | cut -d '@' -f 2)"
+            command mosh "$@"
+            tmux rename-window -t:"$(echo "${@: -1}" | cut -d '@' -f 2)" 'local'
+            trap - INT PIPE EXIT
+        else
+            command mosh "$@"
+        fi
+    }
+fi
+
+# configure dirstack
+DIRSTACKFILE="$HOME/.zdirs"
+if [[ -f $DIRSTACKFILE ]] && [[ $#dirstack -eq 0 ]]; then
+  dirstack=( ${(f)"$(< $DIRSTACKFILE)"} )
+  [[ -d $dirstack[1] ]] && cd $dirstack[1]
+fi
+chpwd() {
+  print -l $PWD ${(u)dirstack} >$DIRSTACKFILE
 }
 
-DIRSTACKSIZE=8
-setopt autopushd pushdminus pushdsilent pushdtohome
+DIRSTACKSIZE=20
+
+setopt autopushd pushdsilent pushdtohome
+setopt pushdignoredups
+setopt pushdminus
 
 # aliases
-alias dh='dirs -v' # show dirstack
+alias ds='dirs -v' # show dirstack
 # global aliases
 alias -g L=' | less'
 alias -g G=' | grep'
