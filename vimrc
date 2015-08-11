@@ -37,7 +37,7 @@ set gdefault " substitution is global by default, specify g to reverse
 set lazyredraw " don't redraw while executing a macro
 set autoread " read changed files
 set autochdir " pwd follows files
-set clipboard=unnamed " use system clipboard
+set clipboard^=unnamedplus " use system clipboard
 
 " open splits in nicer locations
 set splitbelow
@@ -56,7 +56,8 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 set smarttab
-set cindent
+" set cindent
+set smartindent
 
 " width
 set textwidth=0
@@ -109,6 +110,7 @@ match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
 " no cindent for tex
 au FileType tex set nocindent
+au FileType tex set textwidth=100
 
 " replace man with :help when editing vimrc
 au FileType vim set keywordprg=":help"
@@ -207,7 +209,6 @@ nnoremap <leader>0 :10b<cr>
 
 " move char to the end of the line, useful for closing stuff
 nnoremap <leader>z :let @z=@"<cr>x$p:let @"=@z<cr>
-nnoremap <leader>m :cd %:p:h<cr>
 
 " sorting of lines (python imports)
 nnoremap <leader>s vip:!sort<cr>
@@ -299,10 +300,13 @@ NeoBundle 'davidhalter/jedi-vim'
 " visual stuff
 NeoBundle 'bling/vim-airline'
 NeoBundle 'myusuf3/numbers.vim'
+NeoBundle 'ap/vim-css-color'
 
 " colorschemes
 NeoBundleLazy 'nanotech/jellybeans.vim'
 NeoBundleLazy 'zeis/vim-kolor'
+NeoBundleLazy 'chriskempson/base16-vim'
+NeoBundleLazy 'morhetz/gruvbox'
 
 NeoBundle 'yonchu/accelerated-smooth-scroll'
 NeoBundle 'thinca/vim-localrc'
@@ -364,8 +368,15 @@ noremap <silent><leader>t :Tagbar<Cr>
 " Colorscheme from bundle (needs to come after its Bundle line)
 " NeoBundleSource vim-kolor
 " colorscheme kolor
-NeoBundleSource jellybeans.vim
-colorscheme jellybeans
+" NeoBundleSource jellybeans.vim
+" colorscheme jellybeans
+" NeoBundleSource base16-vim
+" let base16colorspace=256
+" colorscheme base16-flat
+NeoBundleSource gruvbox
+let g:gruvbox_contrast='hard'
+let g:gruvbox_termcolors=16
+colorscheme gruvbox
 
 " Airline
 let g:airline#extensions#tabline#enabled = 1

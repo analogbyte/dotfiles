@@ -5,6 +5,10 @@ bindkey '\e.' insert-last-word # make alt+dot work in vim mode
 # virtualenv home
 export WORKON_HOME=~/.envs
 
+if [ -f $HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh ]; then
+    source "$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh";
+fi
+
 # debian specifics
 if which apt-get 2>&1 >/dev/null; then
     if [ -e "/usr/local/bin/virtualenvwrapper.sh" ]; then
@@ -95,6 +99,7 @@ setopt pushdminus
 
 # aliases
 alias ds='dirs -v' # show dirstack
+alias ssh='TERM=xterm-256color ssh'
 # global aliases
 alias -g L=' | less'
 alias -g G=' | grep'
@@ -105,4 +110,5 @@ alias startx="startx -- -dpi 96"
 alias t=task
 alias tmuxlink="tmux link-window -k -s base:1 -t 1"
 alias fuck='sudo $(fc -ln -1)'
+# alias remind="notify-send -u CRITICAL 'Command finished:' '$(fc -ln -1)'"
 alias LESS=R # for ag: --pager=less has color
