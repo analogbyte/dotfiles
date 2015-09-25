@@ -111,6 +111,8 @@ match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 " no cindent for tex
 au FileType tex set nocindent
 au FileType tex set textwidth=100
+" no underscore highlights
+let g:tex_flavor = 'context'
 
 " replace man with :help when editing vimrc
 au FileType vim set keywordprg=":help"
