@@ -318,6 +318,9 @@ au BufRead,BufNewFile *.sls set filetype=sls
 NeoBundleLazy 'saltstack/salt-vim'
 au FileType sls NeoBundleSource salt-vim
 
+NeoBundle 'pearofducks/ansible-vim'
+au FileType ansible set sw=2
+
 call neobundle#end()
 NeoBundleCheck
 
@@ -376,7 +379,7 @@ noremap <silent><leader>t :Tagbar<Cr>
 " let base16colorspace=256
 " colorscheme base16-flat
 NeoBundleSource gruvbox
-let g:gruvbox_contrast='hard'
+let g:gruvbox_contrast_dark='hard'
 let g:gruvbox_termcolors=16
 colorscheme gruvbox
 
@@ -386,6 +389,7 @@ let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 let g:airline#extensions#tabline#fnamecollapse = 0
 let g:airline_exclude_preview = 1
+let g:airline_theme = 'hybridline'
 
 " Seek
 let g:seek_subst_disable = 1
