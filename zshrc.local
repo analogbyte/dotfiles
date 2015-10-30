@@ -1,6 +1,9 @@
 # basic stuff
 setopt vi
 bindkey '\e.' insert-last-word # make alt+dot work in vim mode
+setopt inc_append_history
+setopt share_history
+setopt extended_history
 
 # virtualenv home
 export WORKON_HOME=~/.envs
@@ -97,18 +100,27 @@ setopt autopushd pushdsilent pushdtohome
 setopt pushdignoredups
 setopt pushdminus
 
-# aliases
-alias ds='dirs -v' # show dirstack
-alias ssh='TERM=xterm-256color ssh'
+# dir aliases
+hash -d code=/home/danieln/Code
+hash -d doc=/home/danieln/Documents
+hash -d downl=/home/danieln/Downloads
+hash -d dot=/home/danieln/dotfiles
+hash -d media=/run/media/danieln/media
+
 # global aliases
 alias -g L=' | less'
 alias -g G=' | grep'
 alias -g A=' | ag'
 alias -g V=' | vim -'
+
 # convenience
+alias ds='dirs -v' # show dirstack
+alias ssh='TERM=xterm-256color ssh'
 alias startx="startx -- -dpi 96"
 alias t=task
 alias tmuxlink="tmux link-window -k -s base:1 -t 1"
 alias fuck='sudo $(fc -ln -1)'
+
 # alias remind="notify-send -u CRITICAL 'Command finished:' '$(fc -ln -1)'"
 alias LESS=R # for ag: --pager=less has color
+t
