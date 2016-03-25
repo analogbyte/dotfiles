@@ -13,24 +13,24 @@
       file: path={{ home_dir }}/.backup state=directory owner={{ username }}
     - name: vim - copy vimrc fallback
       copy: src={{ playbook_dir }}/vimrc dest={{ home_dir }}/.vimrc owner={{ username }}
-    - name: nvim - create nvim config dir
-      file: path={{ home_dir }}/.config/nvim state=directory owner={{ username }}
-    - name: nvim - copy nvimrc
-      copy: src={{ playbook_dir }}/nvimrc dest={{ home_dir }}/.config/nvim/init.vim owner={{ username }}
+    # - name: nvim - create nvim config dir
+    #   file: path={{ home_dir }}/.config/nvim state=directory owner={{ username }}
+    # - name: nvim - copy nvimrc
+    #   copy: src={{ playbook_dir }}/nvimrc dest={{ home_dir }}/.config/nvim/init.vim owner={{ username }}
 
     # shell
-    - name: fish - create fish config dir
-      file: path={{ home_dir }}/.config/fish state=directory owner={{ username }}
-    - name: fish - copy config.fish
-      copy: src={{ playbook_dir }}/config.fish dest={{ home_dir }}/.config/fish/config.fish owner={{ username }}
-    - name: zsh - copy zshrc.local
-      copy: src={{ playbook_dir }}/zshrc.local dest={{ home_dir }}/.zshrc.local owner={{ username }}
+    # - name: fish - create fish config dir
+    #   file: path={{ home_dir }}/.config/fish state=directory owner={{ username }}
+    # - name: fish - copy config.fish
+    #   copy: src={{ playbook_dir }}/config.fish dest={{ home_dir }}/.config/fish/config.fish owner={{ username }}
+    # - name: zsh - copy zshrc.local
+    #   copy: src={{ playbook_dir }}/zshrc.local dest={{ home_dir }}/.zshrc.local owner={{ username }}
 
     # multiplexers
     - name: tmux - copy tmux.conf
       copy: src={{ playbook_dir }}/tmux.conf dest={{ home_dir }}/.tmux.conf owner={{ username }}
-    - name: screen - copy screenrc
-      copy: src={{ playbook_dir }}/screenrc dest={{ home_dir }}/.screenrc owner={{ username }}
+    # - name: screen - copy screenrc
+    #   copy: src={{ playbook_dir }}/screenrc dest={{ home_dir }}/.screenrc owner={{ username }}
 
     # vcs
     - name: git - copy gitconfig
@@ -46,14 +46,4 @@
         - dstat
         - htop
         - vim-nox
-        - zsh
-      when: ansible_distribution == 'Debian'
-
-    - name: install packages I want to have
-      apt: name={{ item }} state=installed
-      with_items:
-        - dstat
-        - htop
-        - vim-nox
-        - fish
-      when: ansible_distribution == 'Ubuntu'
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
