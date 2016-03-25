@@ -1,0 +1,55 @@
+# ansible-playbook local_playbook.yml -c local
+- name: create directories, link all files, install relevant packages
+  hosts: localhost
+  remote_user: danieln
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  tasks:
+    # vim
+    - name: (n)vim - create backup dir
+      file: path=~/.backup state=directory
+    - name: (n)vim - create undo dir
+      file: path=~/.backup state=directory
+    - name: vim - link vimrc fallback
+      file: src={{ playbook_dir }}/vimrc dest=~/.vimrc state=link
+    - name: nvim - create nvim config dir
+      file: path=~/.config/nvim state=directory
+    - name: nvim - link nvimrc
+      file: src={{ playbook_dir }}/nvimrc dest=~/.config/nvim/init.vim state=link
+
+    # shell
+    - name: fish - create fish config dir
+      file: path=~/.config/fish state=directory
+    - name: fish - link config.fish
+      file: src={{ playbook_dir }}/config.fish dest=~/.config/fish/config.fish state=link
+    - name: zsh - link zshrc.local
+      file: src={{ playbook_dir }}/zshrc.local dest=~/.zshrc.local state=link
+
+    # multiplexers block
+    - name: tmux - link tmux.conf
+      file: src={{ playbook_dir }}/tmux.conf dest=~/.tmux.conf state=link
+    - name: screen - link screenrc
+      file: src={{ playbook_dir }}/screenrc dest=~/.screenrc state=link
+
+    # vcs block
+    - name: git - link gitconfig
+      file: src={{ playbook_dir }}/gitconfig dest=~/.gitconfig state=link
+
+    # root block
+    - block:
+      - name: install required packages
+        pacman: name={{ item }} state=present update_cache=yes
+        with_items:
+          - ctags
+          - dstat
+          - fish
+          - git
+          - grml-zsh-config
+          - gvim
+          - htop
+          - neovim
+          - the_silver_searcher
+          - tmux
+          - zsh
+        when: ansible_distribution == "Archlinux"
+      become: yes
