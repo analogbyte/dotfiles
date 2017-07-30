@@ -1,0 +1,20 @@
+alternates @danieln.de
+set from        ='Daniel Nägele <mail@danieln.de>'
+set signature   = ~/.mutt/danieln.sig
+set sendmail  = "msmtp -a danieln"
+
+set spoolfile   = +personal/INBOX
+set postponed   = +personal/Entwuerfe
+set mbox        = +personal/Archiv
+set record      = +personal/Gesendete_Objekte
+set trash       = +personal/Papierkorb
+
+send-hook '! ~Q' 'set record=+personal/Gesendete_Objekte'
+send-hook '~Q' 'set record=^'
+
+macro index,pager i "<change-folder>+personal/INBOX<enter>" "open inbox"
+macro index,pager I "<change-folder>+belwue/INBOX<enter>" "open inbox"
+macro index,pager S "s+personal/Spam<enter>" "move a message to spam"
+macro index,pager a "s+personal/Archiv<enter>" "move a message to archive"
+macro index,pager z "s+personal/Web.Sonstiges<enter>" "move a message to stuff"
+macro attach,index,pager o "<shell-escape>offlineimap -a personal<enter>"

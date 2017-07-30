@@ -1,0 +1,51 @@
+#!/bin/bash
+
+TIME_LEFT=$(cat /tmp/pomodoro_time_left)
+PAUSE=$(cat /tmp/pomodoro_pause)
+
+init() {
+    echo 26 > /tmp/pomodoro_time_left;
+    echo 1 > /tmp/pomodoro_pause;
+    TIME_LEFT=26
+    PAUSE=1
+}
+
+output() {
+# init if stuff unset
+    if [ -z $TIME_LEFT ]; then
+        init;
+    fi
+
+    # reinit on 1
+    if [ $TIME_LEFT -le 1 ]; then
+        echo 1 > /tmp/pomodoro_pause;
+        PAUSE=1
+        TIME_LEFT=25
+        notify-send -u CRITICAL "Timer" "25min are up, you can pause now"
+    fi
+
+    # step if not paused
+    if [ $PAUSE -eq 0 ]; then
+        ((TIME_LEFT=TIME_LEFT-1));
+        echo ' '$TIME_LEFT'min left';
+    else
+        echo '';
+    fi
+
+    # save time
+    echo $TIME_LEFT > /tmp/pomodoro_time_left;
+}
+
+case $BLOCK_BUTTON in
+  1) if [ $PAUSE -eq 0 ]; then
+        PAUSE=1;
+    else
+        PAUSE=0;
+        ((TIME_LEFT=TIME_LEFT+1));
+    fi
+    echo $PAUSE > /tmp/pomodoro_pause;
+  ;;
+  3) init ;;
+esac
+
+output;

@@ -1,0 +1,33 @@
+[general]
+accounts = personal,belwue
+fsync = False
+
+[Account personal]
+localrepository = personal-local
+remoterepository = personal-remote
+postsynchook = notmuch new
+
+[Repository personal-local]
+type = Maildir
+localfolders = ~/Mail/personal
+nametrans = lambda x: re.sub(r'Gesendete_Objekte', r'Gesendete Objekte', re.sub(r'Entwuerfe', r'Entw&APw-rfe', x))
+
+[Repository personal-remote]
+type = IMAP
+remotehost = imap.mailbox.org
+cert_fingerprint = bca2f26f7c82fae9f4d0fd46bb3de8750bca216b
+nametrans = lambda x: re.sub(r'Gesendete Objekte', r'Gesendete_Objekte', re.sub(r'Entw&APw-rfe', r'Entwuerfe', x))
+
+[Account belwue]
+localrepository = belwue-local
+remoterepository = belwue-remote
+postsynchook = notmuch new
+
+[Repository belwue-local]
+type = Maildir
+localfolders = ~/Mail/belwue
+
+[Repository belwue-remote]
+type = IMAP
+remotehost = mbox1.belwue.de
+cert_fingerprint = a05c33a4b2b24d873ea46b38bb2724a6dd3a4723

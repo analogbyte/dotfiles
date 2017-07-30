@@ -1,0 +1,539 @@
+set $mod Mod4
+
+##################################
+# visual
+font pango:Fira Mono, Icons 12
+hide_edge_borders both
+new_window normal 1
+
+set $background  #1d2021
+set $foreground  #ebdbb2
+set $black       #282828
+set $darkgrey    #928374
+set $darkred     #cc241d
+set $red         #fb4934
+set $darkgreen   #98971a
+set $green       #b8bb26
+set $darkyellow  #d79921
+set $yellow      #fabd2f
+set $darkblue    #458588
+set $blue        #83a598
+set $darkmagenta #b16286
+set $magenta     #d3869b
+set $darkcyan    #689d6a
+set $cyan        #8ec07c
+set $lightgrey   #a89984
+set $white       #ebdbb2
+
+client.focused          $darkblue $darkblue $foreground $cyan
+client.focused_inactive $black $black $foreground $black
+client.unfocused        $black $black $foreground $black
+client.urgent           $red $red $background $red
+
+##################################
+# bar
+bindsym $mod+period bar mode toggle
+bindsym $mod+slash bar mode toggle ext
+bindsym $mod+comma border toggle
+
+bar {
+    output eDP-1
+    status_command SCRIPT_DIR=/usr/libexec/i3blocks i3blocks -c ~/.config/i3/i3blocks.conf
+    position top
+    colors {
+        background $background
+        statusline $foreground
+        separator $darkgrey
+
+        focused_workspace  $darkblue $darkblue $foreground
+        active_workspace   $darkblue $darkblue $foreground
+        inactive_workspace $background $background $darkgrey
+        urgent_workspace   $red $red $black
+    }
+}
+bar {
+    id ext
+    output DP-1
+    output HDMI-1
+    output DP-2
+    output HDMI-2
+    output DP-3
+    output HDMI-3
+    output DP-3-1
+    output DP-3-2
+    status_command SCRIPT_DIR=/usr/libexec/i3blocks i3blocks -c ~/.config/i3/i3blocks-minimal.conf
+    position top
+    modifier none
+    tray_output none
+    colors {
+        background $background
+        statusline $foreground
+        separator $darkgrey
+
+        focused_workspace  $darkblue $darkblue $foreground
+        active_workspace   $darkblue $darkblue $foreground
+        inactive_workspace $background $background $darkgrey
+        urgent_workspace   $red $red $black
+    }
+}
+
+##################################
+# scratchpad
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+
+bindsym XF86LaunchA [title="scratch: notes"] scratchpad show
+bindsym XF86Explorer [title="scratch: ipython"] scratchpad show
+
+for_window [title="^scratch: "] move scratchpad
+for_window [title="^scratch: "] sticky enable
+for_window [title="^scratch: "] border pixel 1
+exec --no-startup-id termite -t 'scratch: ipython' -e 'ipython'
+exec --no-startup-id termite -t 'scratch: notes' -d '/home/danieln/Notes' -e 'fish -c "while true; nvim todo.md; end"'
+
+##################################
+# window rules
+# for_window [class="^Termite"] border pixel 1
+for_window [class="Pdfpc" window_role="presentation"] move to output left
+for_window [class="Pdfpc" window_role="presenter"] move to output eDP1
+
+##################################
+# execution
+
+exec --no-startup-id 'dunst'
+exec --no-startup-id 'volnoti'
+exec --no-startup-id 'nm-applet'
+# exec --no-startup-id 'blueman-applet'
+
+##################################
+# keybindings
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'killall xss-lock; i3-msg exit'"
+
+bindsym $mod+Return exec termite
+
+bindsym $mod+d exec --no-startup-id "rofi -modi run,window,ssh -show run"
+bindsym XF86Search exec --no-startup-id "rofi -modi window,ssh,run -show window"
+bindsym Print exec --no-startup-id "scrot -s"
+bindsym $mod+i exec --no-startup-id "rofi-pass"
+#bindsym $mod+n clear notifications (see dunstrc)
+
+bindsym Ctrl+Mod1+l exec --no-startup-id /home/danieln/scripts/lock.sh -d
+
+bindsym XF86AudioMute exec --no-startup-id "pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle && if [ $(amixer -c 0 -M -D pulse get Master | grep -o -E '\[on\]|\[off\]' | head -n 1) = '[on]' ]; then volnoti-show $(amixer -c 0 -M -D pulse get Master | grep -o -E [[:digit:]]+% | head -n 1); else volnoti-show -m; fi && pkill -RTMIN+1 i3blocks"
+
+bindsym XF86AudioMicMute exec --no-startup-id "pactl set-source-mute alsa_input.pci-0000_00_1f.3.analog-stereo toggle"
+bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo +5% && volnoti-show $(amixer -c 0 -M -D pulse get Master | grep -o -E [[:digit:]]+% | head -n 1) && pkill -RTMIN+1 i3blocks"
+bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo -5% && volnoti-show $(amixer -c 0 -M -D pulse get Master | grep -o -E [[:digit:]]+% | head -n 1) && pkill -RTMIN+1 i3blocks"
+# bindsym XF86AudioMute exec --no-startup-id "amixer set Master toggle && if amixer get Master | grep -Fq '[off]'; then volnoti-show -m; else volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1); fi"
+# bindsym XF86AudioRaiseVolume exec --no-startup-id "amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"
+# bindsym XF86AudioLowerVolume exec --no-startup-id "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"
+
+# bindsym $mod+e exec --no-startup-id "playerctl next && sleep 1 && pkill -SIGRTMIN+2 i3blocks"
+# bindsym XF86HomePage exec --no-startup-id "playerctl play-pause && sleep 1 && pkill -SIGRTMIN+2 i3blocks"
+# bindsym $mod+e exec --no-startup-id "mpc next && pkill -RTMIN+2 i3blocks"
+# bindsym XF86HomePage exec --no-startup-id "mpc toggle && pkill -RTMIN+2 i3blocks"
+
+# bindsym --release Caps_Lock exec --no-startup-id pkill -SIGRTMIN+3 i3blocks
+# bindsym --release Num_Lock  exec --no-startup-id pkill -SIGRTMIN+3 i3blocks
+
+bindsym XF86Tools exec --no-startup-id "/home/danieln/scripts/toggle_touchpad.sh"
+bindsym XF86Display exec --no-startup-id "/home/danieln/scripts/xrandr-dmenu"
+
+bindsym XF86MonBrightnessUp exec --no-startup-id "light -A 5 && volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $(light)"
+bindsym XF86MonBrightnessDown exec --no-startup-id "light -U 5 && volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $(light)"
+
+# bindsym XF86Explorer exec --no-startup-id ~/scripts/toggle_touchpad.sh
+
+##################################
+# windows
+bindsym --release button13 kill
+bindsym --whole-window $mod+button2 kill
+mode "close? [Y/n]" {
+    bindsym y mode "default" kill
+    bindsym c mode "default" kill
+    bindsym n mode "default"
+
+    bindsym Return mode "default" kill
+    bindsym Escape mode "default"
+}
+bindsym $mod+c mode "close? [Y/n]"
+# bindsym $mod+c kill
+
+bindsym $mod+u [urgent=latest] focus
+
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# conflicting with numpad?? why?
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+bindsym $mod+o focus parent
+
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# bindsym $mod+t layout toggle all
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+a layout toggle split
+bindsym $mod+q sticky toggle
+
+bindsym $mod+b split h
+bindsym $mod+v split v
+
+bindsym $mod+f fullscreen toggle
+
+bindsym $mod+Shift+space floating toggle
+bindsym button3 floating toggle
+floating_modifier $mod
+
+floating_minimum_size 75 x 50
+floating_maximum_size 1900 x 1080
+
+bindsym $mod+space focus mode_toggle
+
+##################################
+# workspaces
+workspace_auto_back_and_forth yes
+
+bindsym Ctrl+Mod1+j workspace prev_on_output
+bindsym Ctrl+Mod1+k workspace next_on_output
+bindsym Ctrl+Shift+Mod1+j move container to workspace prev workspace prev
+bindsym Ctrl+Shift+Mod1+k move container to workspace next workspace next
+
+set $workspace1 "1: web"
+set $workspace2 "2: com"
+set $workspace3 "3: file"
+set $workspace4 "4: misc"
+set $workspace5 "5: misc"
+set $workspace6 "6: misc"
+set $workspace7 "7: shell"
+set $workspace8 "8: shell"
+set $workspace9 "9: shell"
+set $workspace0 "10: shell"
+
+workspace $workspace1 output eDP1
+workspace $workspace2 output eDP1
+workspace $workspace3 output eDP1
+workspace $workspace4 output eDP1
+workspace $workspace5 output eDP1
+workspace $workspace6 output eDP1
+workspace $workspace7 output eDP1
+workspace $workspace8 output eDP1
+workspace $workspace9 output eDP1
+workspace $workspace0 output eDP1
+
+bindsym $mod+1 workspace $workspace1
+bindsym $mod+2 workspace $workspace2
+bindsym $mod+3 workspace $workspace3
+bindsym $mod+4 workspace $workspace4
+bindsym $mod+5 workspace $workspace5
+bindsym $mod+6 workspace $workspace6
+bindsym $mod+7 workspace $workspace7
+bindsym $mod+8 workspace $workspace8
+bindsym $mod+9 workspace $workspace9
+bindsym $mod+0 workspace $workspace0
+
+bindsym $mod+Shift+1 move container to workspace $workspace1
+bindsym $mod+Shift+2 move container to workspace $workspace2
+bindsym $mod+Shift+3 move container to workspace $workspace3
+bindsym $mod+Shift+4 move container to workspace $workspace4
+bindsym $mod+Shift+5 move container to workspace $workspace5
+bindsym $mod+Shift+6 move container to workspace $workspace6
+bindsym $mod+Shift+7 move container to workspace $workspace7
+bindsym $mod+Shift+8 move container to workspace $workspace8
+bindsym $mod+Shift+9 move container to workspace $workspace9
+bindsym $mod+Shift+0 move container to workspace $workspace0
+
+assign [class="^Firefox$"] $workspace1
+assign [class="^chromium$"] $workspace2
+assign [class="^Thunderbird$"] $workspace2
+assign [class="^Nautilus$"] $workspace3
+
+bindsym $mod+grave exec i3-input -F 'workspace %s' -P 'goto workspace: '
+bindsym $mod+Shift+grave exec i3-input -F 'move container to workspace %s' -P 'move to workspace: '
+
+##################################
+# screens
+bindsym $mod+Mod1+h move workspace to output left
+bindsym $mod+Mod1+j move workspace to output down
+bindsym $mod+Mod1+k move workspace to output up
+bindsym $mod+Mod1+l move workspace to output right
+bindsym $mod+Mod1+Left move workspace to output left
+bindsym $mod+Mod1+Down move workspace to output down
+bindsym $mod+Mod1+Up move workspace to output up
+bindsym $mod+Mod1+Right move workspace to output right
+
+##################################
+# command modes
+mode "resize" {
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
+
+    bindsym Shift+h resize shrink width 1 px or 1 ppt
+    bindsym Shift+j resize grow height 1 px or 1 ppt
+    bindsym Shift+k resize shrink height 1 px or 1 ppt
+    bindsym Shift+l resize grow width 1 px or 1 ppt
+    bindsym Shift+Left resize shrink width 1 px or 1 ppt
+    bindsym Shift+Down resize grow height 1 px or 1 ppt
+    bindsym Shift+Up resize shrink height 1 px or 1 ppt
+    bindsym Shift+Right resize grow width 1 px or 1 ppt
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+mode "move" {
+    bindsym h move left
+    bindsym j move down
+    bindsym k move up
+    bindsym l move right
+    bindsym Left move left
+    bindsym Down move down
+    bindsym Up move up
+    bindsym Right move right
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+m mode "move" focus floating
+
+mode "launch" {
+    bindsym f mode "default" exec firefox
+    bindsym t mode "default" exec env LC_TIME=de_DE.utf-8 thunderbird
+    bindsym i mode "default" exec chromium --force-device-scale-factor=1.3 --profile-directory=Default --app-id=bikioccmkafdpakkkcpdbppfkghcmihk
+    bindsym n mode "default" exec nautilus
+    bindsym t mode "default" exec termite
+    bindsym v mode "default" exec virt-manager
+    bindsym s mode "default" exec termite -t 'scratchpad' -e 'ipython'
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+p mode "launch"
+
+mode "escaped" {
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+Escape mode "escaped"
+
+mode "tag" {
+    bindsym 1 mode "default" mark mark1
+    bindsym 2 mode "default" mark mark2
+    bindsym 3 mode "default" mark mark3
+    bindsym 4 mode "default" mark mark4
+    bindsym 5 mode "default" mark mark5
+    bindsym 6 mode "default" mark mark6
+    bindsym 7 mode "default" mark mark7
+    bindsym 8 mode "default" mark mark8
+    bindsym 9 mode "default" mark mark9
+    bindsym 0 mode "default" mark mark0
+    bindsym q mode "default" mark markq
+    bindsym w mode "default" mark markw
+    bindsym r mode "default" mark markr
+    bindsym t mode "default" mark markt
+    bindsym y mode "default" mark marky
+    bindsym u mode "default" mark marku
+    bindsym i mode "default" mark marki
+    bindsym o mode "default" mark marko
+    bindsym p mode "default" mark markp
+    bindsym a mode "default" mark marka
+    bindsym s mode "default" mark marks
+    bindsym d mode "default" mark markd
+    bindsym f mode "default" mark markf
+    bindsym g mode "default" mark markg
+    bindsym h mode "default" mark markh
+    bindsym j mode "default" mark markj
+    bindsym k mode "default" mark markk
+    bindsym o mode "default" mark marko
+    bindsym z mode "default" mark markz
+    bindsym x mode "default" mark markx
+    bindsym c mode "default" mark markc
+    bindsym v mode "default" mark markv
+    bindsym b mode "default" mark markb
+    bindsym n mode "default" mark markn
+    bindsym m mode "default" mark markm
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+t mode "tag"
+
+mode "goto" {
+    bindsym f mode "default" [class="(?i)firefox"] focus
+    bindsym t mode "default" [class="(?i)thunderbird"] focus
+    bindsym n mode "default" [class="(?i)nautilus"] focus
+
+    bindsym m mode "default" exec i3-input -F 'mark %s' -P 'tag name: '
+    bindsym g mode "default" exec i3-input -F '[con_mark=%s] focus' -P 'Go to tag: '
+
+    bindsym Shift+1 mode "default" mark mark1
+    bindsym Shift+2 mode "default" mark mark2
+    bindsym Shift+3 mode "default" mark mark3
+    bindsym Shift+4 mode "default" mark mark4
+    bindsym Shift+5 mode "default" mark mark5
+    bindsym Shift+6 mode "default" mark mark6
+    bindsym Shift+7 mode "default" mark mark7
+    bindsym Shift+8 mode "default" mark mark8
+    bindsym Shift+9 mode "default" mark mark9
+    bindsym Shift+0 mode "default" mark mark0
+    bindsym Shift+q mode "default" mark markq
+    bindsym Shift+w mode "default" mark markw
+    bindsym Shift+r mode "default" mark markr
+    bindsym Shift+t mode "default" mark markt
+    bindsym Shift+y mode "default" mark marky
+    bindsym Shift+u mode "default" mark marku
+    bindsym Shift+i mode "default" mark marki
+    bindsym Shift+o mode "default" mark marko
+    bindsym Shift+p mode "default" mark markp
+    bindsym Shift+a mode "default" mark marka
+    bindsym Shift+s mode "default" mark marks
+    bindsym Shift+d mode "default" mark markd
+    bindsym Shift+f mode "default" mark markf
+    bindsym Shift+g mode "default" mark markg
+    bindsym Shift+h mode "default" mark markh
+    bindsym Shift+j mode "default" mark markj
+    bindsym Shift+k mode "default" mark markk
+    bindsym Shift+o mode "default" mark marko
+    bindsym Shift+z mode "default" mark markz
+    bindsym Shift+x mode "default" mark markx
+    bindsym Shift+c mode "default" mark markc
+    bindsym Shift+v mode "default" mark markv
+    bindsym Shift+b mode "default" mark markb
+    bindsym Shift+n mode "default" mark markn
+    bindsym Shift+m mode "default" mark markm
+
+    bindsym 1 [con_mark="mark1"] mode "default" focus
+    bindsym 2 [con_mark="mark2"] mode "default" focus
+    bindsym 3 [con_mark="mark3"] mode "default" focus
+    bindsym 4 [con_mark="mark4"] mode "default" focus
+    bindsym 5 [con_mark="mark5"] mode "default" focus
+    bindsym 6 [con_mark="mark6"] mode "default" focus
+    bindsym 7 [con_mark="mark7"] mode "default" focus
+    bindsym 8 [con_mark="mark8"] mode "default" focus
+    bindsym 9 [con_mark="mark9"] mode "default" focus
+    bindsym 0 [con_mark="mark0"] mode "default" focus
+    bindsym q [con_mark="markq"] mode "default" focus
+    bindsym w [con_mark="markw"] mode "default" focus
+    bindsym r [con_mark="markr"] mode "default" focus
+    bindsym t [con_mark="markt"] mode "default" focus
+    bindsym y [con_mark="marky"] mode "default" focus
+    bindsym u [con_mark="marku"] mode "default" focus
+    bindsym i [con_mark="marki"] mode "default" focus
+    bindsym o [con_mark="marko"] mode "default" focus
+    bindsym p [con_mark="markp"] mode "default" focus
+    bindsym a [con_mark="marka"] mode "default" focus
+    bindsym s [con_mark="marks"] mode "default" focus
+    bindsym d [con_mark="markd"] mode "default" focus
+    bindsym f [con_mark="markf"] mode "default" focus
+    bindsym g [con_mark="markg"] mode "default" focus
+    bindsym h [con_mark="markh"] mode "default" focus
+    bindsym j [con_mark="markj"] mode "default" focus
+    bindsym k [con_mark="markk"] mode "default" focus
+    bindsym o [con_mark="marko"] mode "default" focus
+    bindsym z [con_mark="markz"] mode "default" focus
+    bindsym x [con_mark="markx"] mode "default" focus
+    bindsym c [con_mark="markc"] mode "default" focus
+    bindsym v [con_mark="markv"] mode "default" focus
+    bindsym b [con_mark="markb"] mode "default" focus
+    bindsym n [con_mark="markn"] mode "default" focus
+    bindsym m [con_mark="markm"] mode "default" focus
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+g mode "goto"
+
+mode "workspace" {
+    bindsym h workspace prev_on_output
+    bindsym j workspace prev
+    bindsym k workspace next
+    bindsym l workspace next_on_output
+
+    bindsym Tab layout toggle all
+
+    bindsym r exec i3-input -F 'rename workspace to "%s"' -P 'New name: '
+
+    bindsym comma move workspace to output left
+    bindsym period move workspace to output right
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+backslash mode "workspace"
+
+mode "mouse" {
+    bindsym Up exec --no-startup-id xdotool mousemove_relative -p 0 10
+    bindsym Down exec --no-startup-id xdotool mousemove_relative -p 180 10
+    bindsym Left exec --no-startup-id xdotool mousemove_relative -p 270 10
+    bindsym Right exec --no-startup-id xdotool mousemove_relative -p 90 10
+
+    bindsym --release KP_Enter exec --no-startup-id xdotool click 1
+    bindsym --release XF86Back exec --no-startup-id xdotool key alt+Left
+    bindsym --release XF86HomePage [title="(?i)netflix"] focus
+    bindsym --release XF86MenuKB mode "fastmouse"
+    bindsym --release XF86AudioPlay exec --no-startup-id xdotool key space
+    bindsym --release F86AudioRewind exec --no-startup-id xdotool key shift+KP_Left
+    bindsym --release XF86AudioForward exec --no-startup-id xdotool key shift+KP_Right
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+mode "fastmouse" {
+    bindsym Up exec --no-startup-id xdotool mousemove_relative -p 0 100
+    bindsym Down exec --no-startup-id xdotool mousemove_relative -p 180 100
+    bindsym Left exec --no-startup-id xdotool mousemove_relative -p 270 100
+    bindsym Right exec --no-startup-id xdotool mousemove_relative -p 90 100
+
+    bindsym --release KP_Enter exec --no-startup-id xdotool click 1
+    bindsym --release XF86Back exec --no-startup-id xdotool key alt+Left
+    bindsym --release XF86HomePage [title="(?i)netflix"] focus
+    bindsym --release XF86MenuKB mode "scrollmouse"
+    bindsym --release XF86AudioPlay exec --no-startup-id xdotool key space
+    bindsym --release XF86AudioRewind exec --no-startup-id xdotool key shift+KP_Left
+    bindsym --release XF86AudioForward exec --no-startup-id xdotool key shift+KP_Right
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+mode "scrollmouse" {
+    bindsym Up exec --no-startup-id xdotool click 4
+    bindsym Down exec --no-startup-id xdotool click 5
+    bindsym Left exec --no-startup-id xdotool click 6
+    bindsym Right exec --no-startup-id xdotool click 7
+
+    bindsym --release KP_Enter mode "mouse"
+    bindsym --release XF86Back exec --no-startup-id xdotool key alt+Left
+    bindsym --release XF86HomePage [title="(?i)netflix"] focus
+    bindsym --release XF86MenuKB mode "mouse"
+    bindsym --release XF86AudioPlay exec --no-startup-id xdotool key space
+    bindsym --release XF86AudioRewind exec --no-startup-id xdotool key shift+KP_Left
+    bindsym --release XF86AudioForward exec --no-startup-id xdotool key shift+KP_Right
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+x mode "mouse"

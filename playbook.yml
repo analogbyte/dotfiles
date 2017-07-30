@@ -1,0 +1,66 @@
+# ansible-playbook local_playbook.yml -c local
+- name: create directories, link all files, install relevant packages
+  connection: local
+  hosts: localhost
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+  tasks:
+    # vim
+    - name: nvim - create backup dir
+      file: path=~/.backup state=directory
+    - name: nvim - create nvim config dir
+      file: path=~/.config/nvim state=directory
+    - name: nvim - link nvimrc
+      file: src={{ playbook_dir }}/nvimrc dest=~/.config/nvim/init.vim state=link
+
+    # shell
+    - name: fish - create fish config dir
+      file: path=~/.config/fish state=directory
+    - name: fish - link config.fish
+      file: src={{ playbook_dir }}/config.fish dest=~/.config/fish/config.fish state=link
+
+    # multiplexers block
+    - name: tmux - link tmux.conf
+      file: src={{ playbook_dir }}/tmux.conf dest=~/.tmux.conf state=link
+    - name: screen - link screenrc
+      file: src={{ playbook_dir }}/screenrc dest=~/.screenrc state=link
+
+    # vcs block
+    - name: git - link gitconfig
+      file: src={{ playbook_dir }}/gitconfig dest=~/.gitconfig state=link
+
+    # systemd user services
+    - name: systemd - link user units
+      file: src={{ playbook_dir }}/systemd dest=~/.config/systemd state=link
+
+    # mail
+    - name: mutt - link muttrc
+      file: src={{ playbook_dir }}/muttrc dest=~/.muttrc state=link
+    - name: mutt - link profile configs
+      file: src={{ playbook_dir }}/mutt dest=~/.mutt state=link
+    - name: msmtp - link mspmtprc
+      file: src={{ playbook_dir }}/msmtprc dest=~/.msmtprc state=link
+    - name: offlineimap - link offlineimaprc
+      file: src={{ playbook_dir }}/offlineimaprc dest=~/.offlineimaprc state=link
+    - name: notmuch - link notmuch-config
+      file: src={{ playbook_dir }}/notmuch-config dest=~/.notmuch-config state=link
+
+    # X
+    - name: X - link xinitrc
+      file: src={{ playbook_dir }}/xinitrc dest=~/.xinitrc state=link
+    - name: X - link Xresources
+      file: src={{ playbook_dir }}/Xresources dest=~/.Xresources state=link
+    - name: xbindkeys - link xbindkeysrc
+      file: src={{ playbook_dir }}/xbindkeysrc dest=~/.xbindkeysrc state=link
+
+    # desktop
+    - name: i3 - link whole dir
+      file: src={{ playbook_dir }}/i3 dest=~/.i3 state=link
+    - name: dunst - link dunstrc
+      file: src={{ playbook_dir }}/dunstrc dest=~/.dunstrc state=link
+
+    # gui apps
+    - name: termite - link config dir
+      file: src={{ playbook_dir }}/termite dest=~/.config/termite state=link
+    - name: zathura - link config dir
+      file: src={{ playbook_dir }}/zathura dest=~/.config/zathura state=link

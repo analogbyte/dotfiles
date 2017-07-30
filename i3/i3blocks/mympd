@@ -1,0 +1,20 @@
+#!/bin/bash
+
+mpd() {
+    if [[ `mpc status` =~ .*\[playing\].* ]]
+    then
+        echo  `mpc current | tr -d "\n"`;
+    else
+        echo " paused" && echo && echo '#458588';
+    fi
+}
+
+case $BLOCK_BUTTON in
+  1) mpc toggle &> /dev/null ;;
+  2) mpc toggle &> /dev/null ;;
+  3) mpc toggle &> /dev/null ;;
+  4) mpc prev &> /dev/null ;;
+  5) mpc next &> /dev/null ;;
+esac
+
+mpd

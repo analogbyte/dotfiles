@@ -1,0 +1,20 @@
+alternates naegele@staff.danieln.de
+set from        ='Daniel Nägele <naegele@belwue.de>'
+set signature   = ~/.mutt/belwue.sig
+set sendmail  = "msmtp -a belwue"
+
+set spoolfile   = +belwue/INBOX
+set postponed   = +belwue/Drafts
+set mbox        = +belwue/INBOX.archiv
+set record      = +belwue/Sent
+set trash       = +belwue/Trash
+
+send-hook '! ~Q' 'set record=+belwue/Sent'
+send-hook '~Q' 'set record=^'
+
+macro index,pager i "<change-folder>+belwue/INBOX<enter>" "open inbox"
+macro index,pager I "<change-folder>+personal/INBOX<enter>" "open inbox"
+macro index,pager S "s+belwue/Spam<enter>" "move a message to spam"
+macro index,pager a "s+belwue/INBOX.archiv<enter>" "move a message to archive"
+macro index,pager z "s+belwue/INBOX.archiv<enter>" "move a message to stuff"
+macro attach,index,pager o "<shell-escape>offlineimap -a belwue<enter>"
