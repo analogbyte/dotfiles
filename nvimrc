@@ -49,6 +49,8 @@ Plug 'goldfeld/vim-seek'
 
 " linter
 Plug 'w0rp/ale'
+Plug 'rhysd/vim-grammarous'
+let g:grammarous#languagetool_cmd = 'languagetool'
 
 " language support
 Plug 'ap/vim-css-color', {'for': 'css'}

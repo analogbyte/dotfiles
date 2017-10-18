@@ -93,7 +93,7 @@ exec --no-startup-id termite -t 'scratch: notes' -d '/home/danieln/Notes' -e 'fi
 
 ##################################
 # window rules
-# for_window [class="^Termite"] border pixel 1
+for_window [class="^Termite"] border pixel 1
 for_window [class="Pdfpc" window_role="presentation"] move to output left
 for_window [class="Pdfpc" window_role="presenter"] move to output eDP1
 
@@ -139,7 +139,7 @@ bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume alsa_ou
 # bindsym --release Num_Lock  exec --no-startup-id pkill -SIGRTMIN+3 i3blocks
 
 bindsym XF86Tools exec --no-startup-id "/home/danieln/scripts/toggle_touchpad.sh"
-bindsym XF86Display exec --no-startup-id "/home/danieln/scripts/xrandr-dmenu"
+bindsym XF86Display exec --no-startup-id "arandr"
 
 bindsym XF86MonBrightnessUp exec --no-startup-id "light -A 5 && volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $(light)"
 bindsym XF86MonBrightnessDown exec --no-startup-id "light -U 5 && volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $(light)"
@@ -169,10 +169,14 @@ bindsym $mod+k focus up
 bindsym $mod+l focus right
 
 # conflicting with numpad?? why?
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
+# bindsym $mod+Left focus left
+# bindsym $mod+Down focus down
+# bindsym $mod+Up focus up
+# bindsym $mod+Right focus right
+
+bindsym $mod+Left exec --no-startup-id playerctl previous
+bindsym $mod+Right exec --no-startup-id playerctl next
+bindsym $mod+Down exec --no-startup-id playerctl play-pause
 
 bindsym $mod+o focus parent
 

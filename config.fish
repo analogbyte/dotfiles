@@ -135,6 +135,7 @@ set -x PATH /home/danieln/.cargo/bin /usr/local/bin/ /home/danieln/.gem/ruby/2.4
 # set -x GPG_TTY (tty)
 # eval (gpg-agent --daemon -c --quiet ^ /dev/null)
 echo "UPDATESTARTUPTTY" | gpg-connect-agent > /dev/null 2>&1
+set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh
 
 set -x EDITOR nvim
 

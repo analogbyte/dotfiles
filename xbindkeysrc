@@ -1,7 +1,7 @@
 # thumb wheel up => scroll left
-"xdotool click --repeat 15 --delay 1 6"
+"xdotool click --repeat 200 --delay 1 7"
    b:10
 
 # thumb wheel down => scroll right
-"xdotool click --repeat 15 --delay 1 7"
+"xdotool click --repeat 200 --delay 1 6"
    b:11
