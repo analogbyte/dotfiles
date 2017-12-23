@@ -1,5 +1,0 @@
-audio/*; /usr/bin/xdg-open %s
-image/*; /usr/bin/xdg-open %s
-application/pdf; /usr/bin/zathura %s
-application/*; /usr/bin/xdg-open %s
-text/html; /usr/bin/firefox %s
