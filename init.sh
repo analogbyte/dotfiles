@@ -1,12 +1,8 @@
 #!/bin/bash
-mkdir -p ~/.backup                      # for my vimrc
+mkdir -p ~/.backup
 
-src_dir="`dirname \"$0\"`"              # relative path
-src_dir="`( cd \"$src_dir\" && pwd )`"  # absolutized and normalized path
+dotfiles_dir="$( cd "$(dirname "$0")" && pwd )"
 
-# link all my stuff
-for file in `ls $src_dir`; do
-    if [[ $file != "README.md" && $file != "init.sh" ]]; then
-        ln -snf $src_dir/$file ~/.$file
-    fi
-done
+for pkg in dunst fish git i3 nvim screen termite tmux xorg zathura; do
+    stow -d ${dotfiles_dir} -t ${HOME} -R ${pkg}
+done;
