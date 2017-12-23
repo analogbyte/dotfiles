@@ -119,6 +119,10 @@ end
 function fish_mode_prompt
 end function
 
+function lb
+    nvim ~/logbook/(date '+%Y-%m-%d').md
+end function
+
 if not set -q VIRTUAL_ENV
     eval (python -m virtualfish)
 end
@@ -144,6 +148,13 @@ set -x NVIM_TUI_ENABLE_CURSOR_SHAPE 1
 set -x MANWIDTH 100
 set -x VAGRANT_DEFAULT_PROVIDER libvirt
 set -x GOPATH /home/danieln/.gopath
+set -x LESS_TERMCAP_mb (printf "\033[01;31m")
+set -x LESS_TERMCAP_md (printf "\033[01;31m")
+set -x LESS_TERMCAP_me (printf "\033[0m")
+set -x LESS_TERMCAP_se (printf "\033[0m")
+set -x LESS_TERMCAP_so (printf "\033[01;44;33m")
+set -x LESS_TERMCAP_ue (printf "\033[0m")
+set -x LESS_TERMCAP_us (printf "\033[01;32m")
 alias vim=nvim
 alias irc='mosh -p 61293 irc -- tmux a -t 0 -d'
 alias r=ranger

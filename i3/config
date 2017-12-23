@@ -89,13 +89,13 @@ for_window [title="^scratch: "] move scratchpad
 for_window [title="^scratch: "] sticky enable
 for_window [title="^scratch: "] border pixel 1
 exec --no-startup-id termite -t 'scratch: ipython' -e 'ipython'
-exec --no-startup-id termite -t 'scratch: notes' -d '/home/danieln/Notes' -e 'fish -c "while true; nvim todo.md; end"'
+exec --no-startup-id termite -t 'scratch: notes' -d '/home/danieln/notes' -e 'fish -c "while true; nvim todo.md; end"'
 
 ##################################
 # window rules
 for_window [class="^Termite"] border pixel 1
-for_window [class="Pdfpc" window_role="presentation"] move to output left
-for_window [class="Pdfpc" window_role="presenter"] move to output eDP1
+# for_window [class="Pdfpc" window_role="presentation"] move to output left
+# for_window [class="Pdfpc" window_role="presenter"] move to output eDP1
 
 ##################################
 # execution
@@ -263,7 +263,7 @@ bindsym $mod+Shift+8 move container to workspace $workspace8
 bindsym $mod+Shift+9 move container to workspace $workspace9
 bindsym $mod+Shift+0 move container to workspace $workspace0
 
-assign [class="^Firefox$"] $workspace1
+assign [class="^Firefox Developer Edition$"] $workspace1
 assign [class="^chromium$"] $workspace2
 assign [class="^Thunderbird$"] $workspace2
 assign [class="^Nautilus$"] $workspace3
@@ -325,7 +325,7 @@ mode "move" {
 bindsym $mod+m mode "move" focus floating
 
 mode "launch" {
-    bindsym f mode "default" exec firefox
+    bindsym f mode "default" exec firefox-developer -P
     bindsym t mode "default" exec env LC_TIME=de_DE.utf-8 thunderbird
     bindsym i mode "default" exec chromium --force-device-scale-factor=1.3 --profile-directory=Default --app-id=bikioccmkafdpakkkcpdbppfkghcmihk
     bindsym n mode "default" exec nautilus

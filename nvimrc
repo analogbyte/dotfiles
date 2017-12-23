@@ -22,7 +22,6 @@ Plug 'justinmk/vim-dirvish'
 " visuals
 Plug 'morhetz/gruvbox'
 Plug 'airblade/vim-gitgutter', { 'on':  'GitGutterToggle' }
-Plug 'yonchu/accelerated-smooth-scroll'
 Plug 'vim-airline/vim-airline'
 Plug 'ivyl/vim-bling'
 Plug 'machakann/vim-highlightedyank'
