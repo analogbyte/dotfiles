@@ -325,7 +325,7 @@ mode "move" {
 bindsym $mod+m mode "move" focus floating
 
 mode "launch" {
-    bindsym f mode "default" exec firefox-developer -P
+    bindsym f mode "default" exec firefox-developer-edition -P
     bindsym t mode "default" exec env LC_TIME=de_DE.utf-8 thunderbird
     bindsym i mode "default" exec chromium --force-device-scale-factor=1.3 --profile-directory=Default --app-id=bikioccmkafdpakkkcpdbppfkghcmihk
     bindsym n mode "default" exec nautilus
