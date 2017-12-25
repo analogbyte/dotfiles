@@ -119,7 +119,7 @@ bindsym Print exec --no-startup-id "scrot -s"
 bindsym $mod+i exec --no-startup-id "rofi-pass"
 #bindsym $mod+n clear notifications (see dunstrc)
 
-bindsym Ctrl+Mod1+l exec --no-startup-id /home/danieln/scripts/lock.sh -d
+bindsym Ctrl+Mod1+l exec --no-startup-id /home/danieln/code/scripts/lock.sh -d
 
 bindsym XF86AudioMute exec --no-startup-id "pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle && if [ $(amixer -c 0 -M -D pulse get Master | grep -o -E '\[on\]|\[off\]' | head -n 1) = '[on]' ]; then volnoti-show $(amixer -c 0 -M -D pulse get Master | grep -o -E [[:digit:]]+% | head -n 1); else volnoti-show -m; fi && pkill -RTMIN+1 i3blocks"
 
@@ -138,13 +138,13 @@ bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume alsa_ou
 # bindsym --release Caps_Lock exec --no-startup-id pkill -SIGRTMIN+3 i3blocks
 # bindsym --release Num_Lock  exec --no-startup-id pkill -SIGRTMIN+3 i3blocks
 
-bindsym XF86Tools exec --no-startup-id "/home/danieln/scripts/toggle_touchpad.sh"
+bindsym XF86Tools exec --no-startup-id "/home/danieln/code/scripts/toggle_touchpad.sh"
 bindsym XF86Display exec --no-startup-id "arandr"
 
 bindsym XF86MonBrightnessUp exec --no-startup-id "light -A 5 && volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $(light)"
 bindsym XF86MonBrightnessDown exec --no-startup-id "light -U 5 && volnoti-show -s /usr/share/pixmaps/volnoti/display-brightness-symbolic.svg $(light)"
 
-# bindsym XF86Explorer exec --no-startup-id ~/scripts/toggle_touchpad.sh
+# bindsym XF86Explorer exec --no-startup-id ~/code/scripts/toggle_touchpad.sh
 
 ##################################
 # windows

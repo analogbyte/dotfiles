@@ -5,7 +5,7 @@ xrdb -merge ~/.Xresources
 ~/.fehbg
 
 # set lockscreen hook
-xss-lock -l ~/scripts/lock.sh &
+xss-lock -l ~/code/scripts/lock.sh &
 
 # start caffeine
 caffeine &
