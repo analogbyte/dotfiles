@@ -213,6 +213,8 @@ nnoremap k gk
 nnoremap gj j
 nnoremap gk k
 
+nnoremap <leader>t "=strftime("%H:%M")<CR>P
+
 " move visual block
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
@@ -276,7 +278,7 @@ let g:tagbar_left = 1
 let g:tagbar_width = 30
 let g:tagbar_autofocus = 1
 let g:tagbar_zoomwidth = 0
-nnoremap <silent><leader>t :Tagbar<Cr>
+nnoremap <silent><leader>f :Tagbar<Cr>
 
 " fzf
 nnoremap <silent><leader>p :exe "FZF ".expand("%:p:h")<CR>

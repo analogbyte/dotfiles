@@ -119,8 +119,8 @@ end
 function fish_mode_prompt
 end function
 
-function lb
-    nvim ~/logbook/(date '+%Y-%m-%d').md
+function lg
+    nvim ~/logbook/(date '+%Y-%m-%d').md ~/notes/todo.md
 end function
 
 if not set -q VIRTUAL_ENV
