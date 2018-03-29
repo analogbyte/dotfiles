@@ -29,4 +29,5 @@ SET fish_pager_color_completion:\x1d
 SET fish_pager_color_description:B3A06D\x1eyellow
 SET fish_pager_color_prefix:white\x1e\x2d\x2dbold\x1e\x2d\x2dunderline
 SET fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
-SET fish_user_abbreviations:g\x20git
+SET fish_user_abbreviations:g\x20git\x1e\x21\x21\x20sudo\x20git\x20reset\x20fish/\x2econfig/fish/fishd\x2eicemark
+SET fish_user_paths:/home/danieln/\x2efzf/bin

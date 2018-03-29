@@ -48,8 +48,6 @@ Plug 'goldfeld/vim-seek'
 
 " linter
 Plug 'w0rp/ale'
-Plug 'rhysd/vim-grammarous'
-let g:grammarous#languagetool_cmd = 'languagetool'
 
 " language support
 Plug 'ap/vim-css-color', {'for': 'css'}
@@ -165,6 +163,10 @@ match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 " general auto commands {{{
 "####################################################################
 
+" vertical help
+command! -nargs=* -complete=help Help vertical belowright help <args>
+autocmd FileType help wincmd L
+
 " do not backup pass files
 autocmd BufRead,BufNewFile /dev/shm* set nobackup
 autocmd BufRead,BufNewFile /dev/shm* set noundofile
@@ -192,6 +194,8 @@ au VimResized * :wincmd =
 "####################################################################
 
 let mapleader = "\<Space>"
+
+map q: :q
 
 " smarter go to beginning of line
 function! ToggleMovement(firstOp, thenOp)
@@ -262,9 +266,6 @@ nnoremap <leader>z :let @z=@"<cr>x$p:let @"=@z<cr>
 nnoremap <leader>s vip:!sort<cr>
 vnoremap <leader>s :!sort<cr>
 
-" align selection in columns
-vnoremap <leader>c :!column -t<cr>
-
 " new line from normal mode
 nnoremap <NL> i<CR><ESC>
 "" }}}
@@ -282,15 +283,15 @@ nnoremap <silent><leader>f :Tagbar<Cr>
 
 " fzf
 nnoremap <silent><leader>p :exe "FZF ".expand("%:p:h")<CR>
-nnoremap <silent><C-p> :exe "FZF ".expand("%:p:h")<CR>
+nnoremap <silent><C-p> :exe "FZF ".expand("/home/danieln")<CR>
 
 " Colorscheme from bundle
-" let g:gruvbox_italic=1
 set background=dark
 " toggle light/dark (needs unimpaired.vim)
 nmap <leader>c cob
 set termguicolors
 let g:gruvbox_contrast_dark='hard'
+let g:airline_theme = 'gruvbox'
 colorscheme gruvbox
 
 " toggle list
@@ -303,7 +304,6 @@ let g:bling_color = 'darkred'
 let g:airline_extensions = ["tabline"]
 let g:airline#extensions#tabline#fnamecollapse = 0
 let g:airline_exclude_preview = 1
-let g:airline_theme = 'gruvbox'
 let g:airline_left_sep=''
 let g:airline_left_alt_sep=''
 let g:airline_right_sep=''
@@ -337,9 +337,6 @@ nnoremap <silent><leader>u :MundoToggle<Cr>
 
 " autoformat python
 autocmd FileType python nnoremap <LocalLeader>= :0,$!yapf<CR>
-
-" (needs to come after its Bundle line) accelerated_smoothscroll
-let g:ac_smooth_scroll_enable_accelerating = 0
 
 " mypy defaults
 let g:ale_fixers = ['autopep8']

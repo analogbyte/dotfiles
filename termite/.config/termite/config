@@ -1,13 +1,16 @@
 [options]
 font = Fira Mono 13
 mouse_autohide = true
-browser = firefox
+browser = firefox-developer-edition
 allow_bold = true
 cursor_blink = off
 cursor_shape = block
 #cursor_shape = ibeam
 #cursor_shape = underline
 scrollback_lines = 1000000
+#audible_bell = true
+visible_bell = true
+urgent_on_bell = true
 
 [colors]
 ## gruvbox {{{

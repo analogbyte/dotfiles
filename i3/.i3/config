@@ -33,11 +33,11 @@ client.urgent           $red $red $background $red
 ##################################
 # bar
 bindsym $mod+period bar mode toggle
-bindsym $mod+slash bar mode toggle ext
+bindsym $mod+slash bar mode toggle ext1; bar mode toggle ext2
 bindsym $mod+comma border toggle
 
 bar {
-    output eDP-1
+    output eDP1
     status_command SCRIPT_DIR=/usr/libexec/i3blocks i3blocks -c ~/.i3/i3blocks.conf
     position top
     colors {
@@ -52,15 +52,32 @@ bar {
     }
 }
 bar {
-    id ext
-    output DP-1
-    output HDMI-1
-    output DP-2
-    output HDMI-2
-    output DP-3
-    output HDMI-3
-    output DP-3-1
-    output DP-3-2
+    id ext1
+    output HDMI1
+    output HDMI2
+    output HDMI3
+    status_command SCRIPT_DIR=/usr/libexec/i3blocks i3blocks -c ~/.i3/i3blocks-minimal.conf
+    position top
+    modifier none
+    tray_output none
+    colors {
+        background $background
+        statusline $foreground
+        separator $darkgrey
+
+        focused_workspace  $darkblue $darkblue $foreground
+        active_workspace   $darkblue $darkblue $foreground
+        inactive_workspace $background $background $darkgrey
+        urgent_workspace   $red $red $black
+    }
+}
+bar {
+    id ext2
+    output DP1
+    output DP2
+    output DP3
+    output DP3-1
+    output DP3-2
     status_command SCRIPT_DIR=/usr/libexec/i3blocks i3blocks -c ~/.i3/i3blocks-minimal.conf
     position top
     modifier none

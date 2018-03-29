@@ -1,26 +1,9 @@
 set -x LANG en_US.UTF-8
 
-function prepend_command
-    set -l prepend $argv[1]
-    if test -z "$prepend"
-        echo "prepend_command needs one argument."
-        return 1
-    end
-    set -l cmd (commandline)
-    if test -z "$cmd"
-        commandline -r $history[1]
-    end
-    set -l old_cursor (commandline -C)
-    commandline -C 0
-    commandline -i "$prepend "
-    commandline -C (math $old_cursor + (echo $prepend | wc -c))
-end
-
 function my_vi_key_bindings
     fish_vi_key_bindings
     bind -M insert \cl 'clear; commandline -f repaint'
     bind -M insert \e. 'history-token-search-backward'
-    bind -M insert \es 'prepend_command sudo'
     bind -M insert \e\[H beginning-of-line
     bind -M insert \e\[F end-of-line
     bind -M insert \ep __fish_paginate
@@ -31,29 +14,24 @@ function my_vi_key_bindings
         and commandline -rb $select
         commandline -f repaint
     end
-    function __fzf_ctrl_x
-        history | fzf +m --tiebreak=index --toggle-sort=ctrl-r | read -l select
-        and echo "
-        ------
-        running: $select
-        ------"
-        and eval $select
-        commandline -f repaint
-    end
     bind -M insert \cr '__fzf_ctrl_r'
-    bind -M insert \cx '__fzf_ctrl_x'
     bind -M insert \cf 'fg % ^ /dev/null'
     bind \cz 'fg %'
 end
 set -g fish_key_bindings my_vi_key_bindings
 
-function sudo
-    if test "$argv" = !!
-        eval command sudo $history[1]
-    else
-        command sudo $argv
-    end
+function sudobangbang --on-event fish_postexec
+    abbr !! sudo $argv[1]
 end
+
+#function __chdir_hook --on-variable PWD --description 'do stuff on dir change'
+#    status --is-command-substitution; and return
+#
+#    if [ $PWD = "/home/danieln/work/go" ]
+#        echo "Setting GOPATH."
+#        set -x GOPATH ~/work/go
+#    end
+#end
 
 set fish_greeting ""
 
@@ -120,7 +98,11 @@ function fish_mode_prompt
 end function
 
 function lg
-    nvim ~/logbook/(date '+%Y-%m-%d').md ~/notes/todo.md
+    nvim ~/logbook/(date '+%Y-%m-%d').md ~/notes/*
+end function
+
+function ww
+    timew week 2018-W(printf "%.2d" $argv[1])-1 to 2018-W(printf "%.2d" (math $argv[1]+1))-1
 end function
 
 if not set -q VIRTUAL_ENV
@@ -144,10 +126,8 @@ set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh
 set -x EDITOR nvim
 
 set -x NVIM_TUI_ENABLE_TRUE_COLOR 1
-set -x NVIM_TUI_ENABLE_CURSOR_SHAPE 1
 set -x MANWIDTH 100
 set -x VAGRANT_DEFAULT_PROVIDER libvirt
-set -x GOPATH /home/danieln/.gopath
 set -x LESS_TERMCAP_mb (printf "\033[01;31m")
 set -x LESS_TERMCAP_md (printf "\033[01;31m")
 set -x LESS_TERMCAP_me (printf "\033[0m")
@@ -162,4 +142,6 @@ alias ssh='env TERM=xterm-256color ssh'
 alias docker_ip="docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
 alias merge_pdf="gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile=merged.pdf"
 # alias startx="startx -- -dpi 96"
+alias ip='ip -c'
+
 abbr g=git
