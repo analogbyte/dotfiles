@@ -143,5 +143,6 @@ alias docker_ip="docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
 alias merge_pdf="gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile=merged.pdf"
 # alias startx="startx -- -dpi 96"
 alias ip='ip -c'
+alias dmesg='dmesg -T'
 
 abbr g=git

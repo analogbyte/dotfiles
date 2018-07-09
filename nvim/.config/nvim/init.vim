@@ -207,8 +207,8 @@ function! ToggleMovement(firstOp, thenOp)
 endfunction
 
 " start and end of line
-nnoremap <silent> H :call ToggleMovement('^', '0')<CR>
-nnoremap L $
+noremap <silent> H :call ToggleMovement('^', '0')<CR>
+noremap L $
 
 
 " jump to visual lines
@@ -288,7 +288,7 @@ nnoremap <silent><C-p> :exe "FZF ".expand("/home/danieln")<CR>
 " Colorscheme from bundle
 set background=dark
 " toggle light/dark (needs unimpaired.vim)
-nmap <leader>c cob
+nmap <leader>c =ob
 set termguicolors
 let g:gruvbox_contrast_dark='hard'
 let g:airline_theme = 'gruvbox'
@@ -339,7 +339,12 @@ nnoremap <silent><leader>u :MundoToggle<Cr>
 autocmd FileType python nnoremap <LocalLeader>= :0,$!yapf<CR>
 
 " mypy defaults
-let g:ale_fixers = ['autopep8']
+let g:ale_linters = {
+\   'python': ['pylint', 'flake8'],
+\}
+let g:ale_fixers = {
+\   'python': ['autopep8'],
+\}
 let g:ale_python_autopep8_options = '--max-line-length 100'
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 let g:ale_lint_on_enter = 0
