@@ -16,6 +16,7 @@ call plug#begin()
 " views
 Plug 'simnalamburt/vim-mundo', { 'on':  'MundoToggle' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'majutsushi/tagbar', { 'on':  'TagbarToggle' }
 Plug 'justinmk/vim-dirvish'
 
@@ -27,8 +28,7 @@ Plug 'ivyl/vim-bling'
 Plug 'machakann/vim-highlightedyank'
 
 " editing
-Plug 'tomtom/tcomment_vim' "toggle comments according to ft (mapping: gc)
-Plug 'tpope/vim-unimpaired' " mappings for dual ops
+Plug 'tpope/vim-commentary' " toggle comments according to ft (mapping: gc)
 Plug 'tpope/vim-surround'
 " Cheatsheet for surround:
 "  cs + $old_surrounding + $new_surrounding = changes old to new, new waits for
@@ -41,8 +41,8 @@ Plug 'goldfeld/vim-seek'
 "  $action + s + two chars = target from here to the middle of those two chars
 "  $action + x + two chars = target from here to those two chars
 "  $action + r + two chars = target the inner word with the chars and jump back
-"  $action + u + two chars = target the outer word with the chars and jump back
 "  $action + p + two chars = target the inner word with the chars and stay
+"  $action + u + two chars = target the outer word with the chars and jump back
 "  $action + o + two chars = target the outer word with the chars and stay
 "  All those work backwards with their capital counterparts.
 
@@ -53,7 +53,7 @@ Plug 'w0rp/ale'
 Plug 'ap/vim-css-color', {'for': 'css'}
 Plug 'rust-lang/rust.vim'
 Plug 'pearofducks/ansible-vim'
-Plug 'fatih/vim-go'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'google/yapf', {'for': 'python'} " auto format
 Plug 'davidhalter/jedi-vim', {'for': 'python'} " auto completion
 
@@ -217,8 +217,6 @@ nnoremap k gk
 nnoremap gj j
 nnoremap gk k
 
-nnoremap <leader>t "=strftime("%H:%M")<CR>P
-
 " move visual block
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
@@ -233,15 +231,18 @@ nnoremap gV `[v`]
 " change Y from yy to y$
 map Y y$
 
-" alternative esc
-inoremap jk <esc>
-
 " remove search hl
 nnoremap <silent><C-C> :nohl<cr>
 
 " switch buffers
+nnoremap <silent><leader><Tab> :bd<cr>
 nnoremap <silent><Tab> :bn<cr>
 nnoremap <silent><S-Tab> :bp<cr>
+if exists(':tnoremap')
+    tnoremap <silent><Tab> :bn<cr>
+    tnoremap <silent><S-Tab> :bp<cr>
+    tnoremap <Esc> <C-\><C-n>
+endif
 
 " save with sudo
 cmap w!! w !sudo tee %
@@ -279,11 +280,12 @@ let g:tagbar_left = 1
 let g:tagbar_width = 30
 let g:tagbar_autofocus = 1
 let g:tagbar_zoomwidth = 0
-nnoremap <silent><leader>f :Tagbar<Cr>
+nnoremap <silent><leader>t :Tagbar<Cr>
+nnoremap <silent><leader>T :Tags<Cr>
 
 " fzf
-nnoremap <silent><leader>p :exe "FZF ".expand("%:p:h")<CR>
-nnoremap <silent><C-p> :exe "FZF ".expand("/home/danieln")<CR>
+nnoremap <silent><leader>p :Files<CR>
+nnoremap <silent><leader>P :Files /home/danieln<CR>
 
 " Colorscheme from bundle
 set background=dark

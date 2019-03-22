@@ -28,10 +28,12 @@
 *color7:  #a89984
 *color15: #ebdbb2
 
-xterm*faceName: Fira Mono:size=13:antialias=false
+Xcursor.size: 20
+
+xterm*faceName: Fira Mono:size=11:antialias=false
 xterm*font: 7x13
 
-rofi.font: Fira Mono 13
+rofi.font: Fira Mono 10
 rofi.location: 6
 rofi.width: 100
 rofi.bw: 0

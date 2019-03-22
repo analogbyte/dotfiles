@@ -20,9 +20,9 @@ function my_vi_key_bindings
 end
 set -g fish_key_bindings my_vi_key_bindings
 
-function sudobangbang --on-event fish_postexec
-    abbr !! sudo $argv[1]
-end
+#function sudobangbang --on-event fish_postexec
+#    abbr !! sudo $argv[1]
+#end
 
 #function __chdir_hook --on-variable PWD --description 'do stuff on dir change'
 #    status --is-command-substitution; and return
@@ -95,31 +95,26 @@ function fish_prompt
 end
 
 function fish_mode_prompt
-end function
+end
 
 function lg
     nvim ~/logbook/(date '+%Y-%m-%d').md ~/notes/*
-end function
+end
 
 function ww
-    timew week 2018-W(printf "%.2d" $argv[1])-1 to 2018-W(printf "%.2d" (math $argv[1]+1))-1
-end function
+    timew week 2019-W(printf "%.2d" $argv[1])-1 to 2019-W(printf "%.2d" (math $argv[1]+1))-1
+end
 
 if not set -q VIRTUAL_ENV
     eval (python -m virtualfish)
 end
 
 # source /home/danieln/Code/z-fish/z.fish
-source /usr/share/autojump/autojump.fish
+# source /usr/share/autojump/autojump.fish
 
-set -x PATH /home/danieln/.cargo/bin /usr/local/bin/ /home/danieln/.gem/ruby/2.4.0/bin $PATH
+set -x PATH /home/danieln/.cargo/bin /usr/local/bin/ /home/danieln/.gem/ruby/2.4.0/bin /home/danieln/.gem/ruby/2.6.0/bin $PATH
 
 # gpg and ssh agent
-# gpgconf --launch gpg-agent
-# set -e SSH_AUTH_SOCK
-# set -U -x SSH_AUTH_SOCK /run/user/1000/gnupg/S.gpg-agent.ssh
-# set -x GPG_TTY (tty)
-# eval (gpg-agent --daemon -c --quiet ^ /dev/null)
 echo "UPDATESTARTUPTTY" | gpg-connect-agent > /dev/null 2>&1
 set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh
 
@@ -135,14 +130,13 @@ set -x LESS_TERMCAP_se (printf "\033[0m")
 set -x LESS_TERMCAP_so (printf "\033[01;44;33m")
 set -x LESS_TERMCAP_ue (printf "\033[0m")
 set -x LESS_TERMCAP_us (printf "\033[01;32m")
+
+thefuck --alias | source
 alias vim=nvim
 alias irc='mosh -p 61293 irc -- tmux a -t 0 -d'
 alias r=ranger
 alias ssh='env TERM=xterm-256color ssh'
 alias docker_ip="docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
 alias merge_pdf="gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile=merged.pdf"
-# alias startx="startx -- -dpi 96"
 alias ip='ip -c'
 alias dmesg='dmesg -T'
-
-abbr g=git

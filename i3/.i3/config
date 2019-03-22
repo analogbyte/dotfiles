@@ -2,7 +2,7 @@ set $mod Mod4
 
 ##################################
 # visual
-font pango:Fira Mono, Icons 12
+font pango:Fira Mono, Icons 11
 hide_edge_borders both
 new_window normal 1
 
@@ -75,6 +75,8 @@ bar {
     id ext2
     output DP1
     output DP2
+    output DP2-1
+    output DP2-2
     output DP3
     output DP3-1
     output DP3-2
@@ -139,11 +141,11 @@ bindsym $mod+i exec --no-startup-id "rofi-pass"
 
 bindsym Ctrl+Mod1+l exec --no-startup-id /home/danieln/code/scripts/lock.sh -d
 
-bindsym XF86AudioMute exec --no-startup-id "pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle && if [ $(amixer -c 0 -M -D pulse get Master | grep -o -E '\[on\]|\[off\]' | head -n 1) = '[on]' ]; then volnoti-show $(amixer -c 0 -M -D pulse get Master | grep -o -E [[:digit:]]+% | head -n 1); else volnoti-show -m; fi && pkill -RTMIN+1 i3blocks"
+bindsym XF86AudioMute exec --no-startup-id "pactl set-sink-mute alsa_output.pci-0000_00_1f.3.analog-stereo toggle && if pactl list sinks | grep 'Mute: no'; then volnoti-show $(pactl list sinks | grep 'Volume: f' | cut -d'/' -f2 | tr -d [:blank:]); else volnoti-show -m; fi && pkill -RTMIN+1 i3blocks"
 
 bindsym XF86AudioMicMute exec --no-startup-id "pactl set-source-mute alsa_input.pci-0000_00_1f.3.analog-stereo toggle"
-bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo +5% && volnoti-show $(amixer -c 0 -M -D pulse get Master | grep -o -E [[:digit:]]+% | head -n 1) && pkill -RTMIN+1 i3blocks"
-bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo -5% && volnoti-show $(amixer -c 0 -M -D pulse get Master | grep -o -E [[:digit:]]+% | head -n 1) && pkill -RTMIN+1 i3blocks"
+bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo +5% && volnoti-show $(pactl list sinks | grep 'Volume: f' | cut -d'/' -f2 | tr -d [:blank:]) && pkill -RTMIN+1 i3blocks"
+bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume alsa_output.pci-0000_00_1f.3.analog-stereo -5% && volnoti-show $(pactl list sinks | grep 'Volume: f' | cut -d'/' -f2 | tr -d [:blank:]) && pkill -RTMIN+1 i3blocks"
 # bindsym XF86AudioMute exec --no-startup-id "amixer set Master toggle && if amixer get Master | grep -Fq '[off]'; then volnoti-show -m; else volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1); fi"
 # bindsym XF86AudioRaiseVolume exec --no-startup-id "amixer set Master 2%+ && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"
 # bindsym XF86AudioLowerVolume exec --no-startup-id "amixer set Master 2%- && volnoti-show $(amixer get Master | grep -Po '[0-9]+(?=%)' | head -1)"
@@ -343,7 +345,7 @@ mode "move" {
 bindsym $mod+m mode "move" focus floating
 
 mode "launch" {
-    bindsym f mode "default" exec firefox-developer-edition -P
+    bindsym f mode "default" exec firefox-developer-edition
     bindsym t mode "default" exec env LC_TIME=de_DE.utf-8 thunderbird
     bindsym i mode "default" exec gajim
     bindsym n mode "default" exec nautilus
