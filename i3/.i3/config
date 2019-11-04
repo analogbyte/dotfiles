@@ -133,8 +133,8 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 bindsym $mod+Return exec termite
 
-bindsym $mod+d exec --no-startup-id "rofi -modi run,window,ssh -show run"
-bindsym XF86Search exec --no-startup-id "rofi -modi window,ssh,run -show window"
+bindsym $mod+d exec --no-startup-id "rofi -modi combi,run,window,ssh -combi-modi run,window -show combi"
+bindsym XF86Search exec --no-startup-id "rofi -modi window,run,ssh,combi -combi-modi run,window -show window"
 bindsym Print exec --no-startup-id "scrot -s"
 bindsym $mod+i exec --no-startup-id "rofi-pass"
 #bindsym $mod+n clear notifications (see dunstrc)

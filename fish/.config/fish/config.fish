@@ -24,6 +24,17 @@ set -g fish_key_bindings my_vi_key_bindings
 #    abbr !! sudo $argv[1]
 #end
 
+function unclean_repos
+    for path in (find -name ".git" -type d | grep -v "/.cache/")
+        cd $path/..
+        git status | grep clean > /dev/null
+        if test $status -ne 0
+            echo $path/..
+        end
+        cd -
+    end
+end
+
 #function __chdir_hook --on-variable PWD --description 'do stuff on dir change'
 #    status --is-command-substitution; and return
 #

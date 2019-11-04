@@ -355,4 +355,6 @@ let g:ale_lint_on_text_changed = 'never'
 nnoremap <leader>= :ALEFix<CR>
 nnoremap <leader>l :ALEToggle<CR>
 nnoremap gn :ALENextWrap<CR>
+
+let g:tex_flavor = "latex"
 "" }}}
