@@ -1,0 +1,444 @@
+##################################
+# visual
+font pango:Fira Mono, FontAwesome 11
+
+set $background  #1d2021
+set $foreground  #ebdbb2
+set $black       #282828
+set $darkgrey    #928374
+set $darkred     #cc241d
+set $red         #fb4934
+set $darkgreen   #98971a
+set $green       #b8bb26
+set $darkyellow  #d79921
+set $yellow      #fabd2f
+set $darkblue    #458588
+set $blue        #83a598
+set $darkmagenta #b16286
+set $magenta     #d3869b
+set $darkcyan    #689d6a
+set $cyan        #8ec07c
+set $lightgrey   #a89984
+set $white       #ebdbb2
+
+client.focused          $darkblue $darkblue $foreground $cyan $darkblue
+client.focused_inactive $black $black $foreground $black $black
+client.unfocused        $black $black $foreground $black $black
+client.urgent           $red $red $background $red $red
+
+smart_borders on
+hide_edge_borders both
+default_border pixel 1
+
+bar {
+    id main
+    output eDP-1
+    status_command i3status-rs ~/.config/sway/i3status-rs.toml
+    position top
+    colors {
+        background $background
+        statusline $foreground
+        separator $darkgrey
+
+        focused_workspace  $darkblue $darkblue $foreground
+        active_workspace   $darkblue $darkblue $foreground
+        inactive_workspace $background $background $darkgrey
+        urgent_workspace   $red $red $black
+    }
+}
+bar {
+    id net
+    output eDP-1
+    workspace_buttons no
+    binding_mode_indicator no
+    status_command i3status-rs ~/.config/sway/i3status-rs-net.toml
+    tray_output none
+    modifier none
+    mode hide
+    hidden_state hide
+    #gaps 15px
+    position bottom
+    colors {
+        background $black
+        statusline $foreground
+        separator $darkgrey
+
+        focused_workspace  $darkblue $darkblue $foreground
+        active_workspace   $darkblue $darkblue $foreground
+        inactive_workspace $background $background $darkgrey
+        urgent_workspace   $red $red $black
+    }
+}
+bar {
+    id ext
+    output DP-1
+    output DP-2
+    output DP-3
+    output DP-4
+    status_command i3status-rs ~/.config/sway/i3status-rs-external.toml
+    tray_output none
+    position top
+    colors {
+        background $background
+        statusline $foreground
+        separator $darkgrey
+
+        focused_workspace  $darkblue $darkblue $foreground
+        active_workspace   $darkblue $darkblue $foreground
+        inactive_workspace $background $background $darkgrey
+        urgent_workspace   $red $red $black
+    }
+}
+
+##################################
+# hardware
+input type:keyboard {
+    xkb_layout us
+    xkb_model pc105
+    xkb_variant altgr-intl
+    xkb_options compose:caps
+}
+
+input type:pointer {
+}
+
+input type:touchpad {
+    events disabled
+    tap enabled
+    dwt enabled
+    middle_emulation enabled
+    # natural_scroll enabled
+}
+
+output * bg ~/.wall.jpg fill $background
+output "Eizo Nanao Corporation EV2436W 62758095" position 1920 1200 transform 270
+output "Eizo Nanao Corporation EV2436W 62756095" position 800 0
+output eDP-1 position 0 1200
+
+##################################
+# startup execs
+exec mako --font "pango:Fira Mono 9" \
+         --text-color "$foreground"\
+         --background-color "$background" \
+         --border-color "$darkgreen" \
+         --border-size 3 \
+         --border-radius 1 \
+         --icons 0 \
+         --output eDP-1 \
+         --default-timeout 5000 \
+         --anchor "bottom-right"
+exec redshift -l 48.775846:9.182932
+exec termite -t 'scratch: ipython' -e 'fish -c "while true; ipython; end"'
+exec termite -t 'scratch: notes' -e 'fish -c "cd ~/notes/; while true; nvim *; end"'
+
+set $locker swaylock-blur -- -C ~/.config/sway/swaylock.conf
+exec swayidle -w \
+    timeout 600 "$locker" \
+    timeout 900 'swaymsg "output * dpms off"' \
+    timeout 15 'if pgrep -x swaylock; then swaymsg "output * dpms off"; fi' \
+    resume 'swaymsg "output * dpms on"' \
+    before-sleep "$locker"
+
+
+##################################
+# window rules
+for_window [shell="xwayland"] title_format "ಠ_ಠ :: %title"
+
+for_window [app_id="firefoxdeveloperedition"] inhibit_idle fullscreen
+for_window [app_id="firefoxdeveloperedition" title="Firefox Developer Edition - Sharing Indicator"] {
+    floating enable
+    resize set 30px
+    move position 1800px 0px
+    border none
+}
+
+for_window [app_id="vlc"] inhibit_idle visible
+
+for_window [app_id="gcr-prompter"] border pixel 1
+
+for_window [title="^scratch: "] {
+    move scratchpad
+    sticky enable
+}
+for_window [app_id="^launcher$"] {
+    floating enable
+    resize set 1920px
+    move position 0px 0px
+    border none
+    opacity 0.96
+}
+
+##################################
+# scratchpad and launcher
+bindsym Mod4+Shift+minus move scratchpad
+bindsym Mod4+minus scratchpad show
+
+bindsym XF86LaunchA [title="scratch: notes"] scratchpad show
+bindsym XF86Explorer [title="scratch: ipython"] scratchpad show
+
+bindsym Mod4+d exec termite --name=launcher -e "bash -c 'compgen -c | grep -E '^[a-zA-Z]' | sort -u | fzf --layout=reverse | xargs -r swaymsg -t command exec'"
+
+# bindsym Mod4+d exec env BEMENU_BACKEND=wayland \
+#     bemenu-run -p " run >" \
+#     --fn "Fira Mono 11" -H25 \
+#     --tb=#458588 --tf=#ebdbb2 \
+#     --fb=#1d2021 --ff=#ebdbb2 \
+#     --nb=#1d2021 --nf=#ebdbb2 \
+#     --hb=#1d2021 --hf=#fb4934 \
+#     --sb=#1d2021 --sf=#fb4934 \
+#     --scb=#1d2021 --scf=#ebdbb2
+
+# bindsym Mod4+i exec termite --name=launcher -e fzf-pass
+
+##################################
+# sway control key bindings
+bindsym Ctrl+Mod1+l exec swaylock-blur -- -C ~/.config/sway/swaylock.conf
+bindsym Mod4+Shift+c reload
+bindsym Mod4+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
+
+bindsym Mod4+period bar mode toggle
+bindsym Mod4+slash bar mode toggle main
+bindsym Mod4+semicolon bar mode toggle net
+
+mode "escape" {
+    bindsym Escape mode "default"
+}
+bindsym Mod4+Escape mode "escape"
+
+##################################
+# container manipulation bindings
+floating_modifier Mod4 normal
+
+bindsym --whole-window Mod4+button2 kill
+mode "close? [Y/n]" {
+    bindsym y kill; mode "default"
+    bindsym c kill; mode "default"
+    bindsym n mode "default"
+
+    bindsym Return kill; mode "default"
+    bindsym Escape mode "default"
+}
+bindsym Mod4+c mode "close? [Y/n]"
+
+bindsym Mod4+h focus left
+bindsym Mod4+j focus down
+bindsym Mod4+k focus up
+bindsym Mod4+l focus right
+bindsym Mod4+Shift+h move left
+bindsym Mod4+Shift+j move down
+bindsym Mod4+Shift+k move up
+bindsym Mod4+Shift+l move right
+bindsym Mod4+comma border toggle
+
+##################################
+# container jumping
+mode "tag" {
+    bindsym 1 mark 1; mode "default"
+    bindsym 2 mark 2; mode "default"
+    bindsym 3 mark 3; mode "default"
+    bindsym 4 mark 4; mode "default"
+    bindsym 5 mark 5; mode "default"
+    bindsym 6 mark 6; mode "default"
+    bindsym 7 mark 7; mode "default"
+    bindsym 8 mark 8; mode "default"
+    bindsym 9 mark 9; mode "default"
+    bindsym 0 mark 0; mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym Mod4+t mode "tag"
+mode "goto" {
+    bindsym 1 [con_mark="1"] focus; mode "default"
+    bindsym 2 [con_mark="2"] focus; mode "default"
+    bindsym 3 [con_mark="3"] focus; mode "default"
+    bindsym 4 [con_mark="4"] focus; mode "default"
+    bindsym 5 [con_mark="5"] focus; mode "default"
+    bindsym 6 [con_mark="6"] focus; mode "default"
+    bindsym 7 [con_mark="7"] focus; mode "default"
+    bindsym 8 [con_mark="8"] focus; mode "default"
+    bindsym 9 [con_mark="9"] focus; mode "default"
+    bindsym 0 [con_mark="0"] focus; mode "default"
+
+    bindsym apostrophe mode "tag"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym Mod4+apostrophe mode "goto"
+
+##################################
+# workspace manipulation
+workspace_auto_back_and_forth yes
+
+bindsym Ctrl+Mod1+j workspace prev_on_output
+bindsym Ctrl+Mod1+k workspace next_on_output
+bindsym Ctrl+Shift+Mod1+j move container to workspace prev workspace prev
+bindsym Ctrl+Shift+Mod1+k move container to workspace next workspace next
+
+set $workspace1 "1: web"
+set $workspace2 "2: com"
+set $workspace3 "3: file"
+set $workspace4 "4: misc"
+set $workspace5 "5: misc"
+set $workspace6 "6: misc"
+set $workspace7 "7: shell"
+set $workspace8 "8: shell"
+set $workspace9 "9: shell"
+set $workspace0 "10: shell"
+
+workspace $workspace1 output eDP-1
+workspace $workspace2 output eDP-1
+
+bindsym Mod4+1 workspace $workspace1
+bindsym Mod4+2 workspace $workspace2
+bindsym Mod4+3 workspace $workspace3
+bindsym Mod4+4 workspace $workspace4
+bindsym Mod4+5 workspace $workspace5
+bindsym Mod4+6 workspace $workspace6
+bindsym Mod4+7 workspace $workspace7
+bindsym Mod4+8 workspace $workspace8
+bindsym Mod4+9 workspace $workspace9
+bindsym Mod4+0 workspace $workspace0
+bindsym Mod4+Shift+1 move container to workspace $workspace1
+bindsym Mod4+Shift+2 move container to workspace $workspace2
+bindsym Mod4+Shift+3 move container to workspace $workspace3
+bindsym Mod4+Shift+4 move container to workspace $workspace4
+bindsym Mod4+Shift+5 move container to workspace $workspace5
+bindsym Mod4+Shift+6 move container to workspace $workspace6
+bindsym Mod4+Shift+7 move container to workspace $workspace7
+bindsym Mod4+Shift+8 move container to workspace $workspace8
+bindsym Mod4+Shift+9 move container to workspace $workspace9
+bindsym Mod4+Shift+0 move container to workspace $workspace0
+
+assign [app_id="firefox"] $workspace1
+assign [app_id="thunderbird"] $workspace2
+assign [app_id="nautilus"] $workspace3
+
+bindsym Mod4+Mod1+h move workspace to output left
+bindsym Mod4+Mod1+j move workspace to output down
+bindsym Mod4+Mod1+k move workspace to output up
+bindsym Mod4+Mod1+l move workspace to output right
+
+##################################
+# layout manipulation
+bindsym Mod4+b splith
+bindsym Mod4+v splitv
+
+bindsym Mod4+s layout stacking
+bindsym Mod4+w layout tabbed
+bindsym Mod4+e layout toggle split
+bindsym Mod4+a layout toggle split # default is e
+
+bindsym Mod4+q sticky toggle
+
+bindsym Mod4+f fullscreen
+
+bindsym Mod4+Shift+space floating toggle
+bindsym Mod4+space focus mode_toggle
+
+bindsym Mod4+o focus parent # default is a
+
+mode "resize-directional" {
+    bindsym h resize grow left 5 ppt
+    bindsym j resize grow down 5 ppt
+    bindsym k resize grow up 5 ppt
+    bindsym l resize grow right 5 ppt
+    bindsym Shift+h resize shrink left 5 ppt
+    bindsym Shift+j resize shrink down 5 ppt
+    bindsym Shift+k resize shrink up 5 ppt
+    bindsym Shift+l resize shring right 5 ppt
+
+    bindsym f mode "resize-directional-fine"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+mode "resize-directional-fine" {
+    bindsym h resize grow left 1 ppt
+    bindsym j resize grow down 1 ppt
+    bindsym k resize grow up 1 ppt
+    bindsym l resize grow right 1 ppt
+    bindsym Shift+h resize shrink left 1 ppt
+    bindsym Shift+j resize shrink down 1 ppt
+    bindsym Shift+k resize shrink up 1 ppt
+    bindsym Shift+l resize shring right 1 ppt
+
+    bindsym d mode "resize-directional"
+
+    bindsym q mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+mode "resize-anchored" {
+    bindsym h resize shrink horizontal 20 px
+    bindsym j resize shrink vertical 20 px
+    bindsym k resize grow vertical 20 px
+    bindsym l resize grow horizontal 20 px
+    bindsym Shift+h resize shrink horizontal 1 px
+    bindsym Shift+j resize shrink vertical 1 px
+    bindsym Shift+k resize grow vertical 1 px
+    bindsym Shift+l resize grow horizontal 1 px
+
+    bindsym d mode "resize-directional"
+    bindsym f mode "resize-directional-fine"
+
+    bindsym q mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym Mod4+r mode "resize-anchored"
+
+mode "gaps" {
+    bindsym 0 gaps inner all set 0; mode "default"
+    bindsym j gaps inner all minus 10
+    bindsym k gaps inner all plus 10
+    bindsym Shift+j gaps inner all minus 1
+    bindsym Shift+k gaps inner all plus 1
+
+    bindsym q mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym Mod4+g mode "gaps"
+
+mode "move" {
+    bindsym h move left
+    bindsym j move down
+    bindsym k move up
+    bindsym l move right
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym Mod4+m focus floating; mode "move"
+
+##################################
+# execution keys
+bindsym Mod4+Return exec termite
+
+mode "launch" {
+    bindsym f exec env MOZ_ENABLE_WAYLAND=1 firefox-developer-edition; mode "default"
+    bindsym t exec env LC_TIME=de_DE.utf-8 thunderbird; mode "default"
+    bindsym n exec nautilus; mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym Mod4+p mode "launch"
+
+bindsym Mod4+n exec makoctl dismiss
+bindsym Mod4+Shift+n exec makoctl dismiss -a
+
+##################################
+# fancy keys
+bindsym Print exec grim -g "$(slurp)"
+
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5% && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5% && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
+bindsym XF86MonBrightnessUp exec light -A 5
+bindsym XF86MonBrightnessDown exec light -U 5
+
+bindsym XF86Display exec wdisplays
+bindsym XF86Tools input "2:7:SynPS/2_Synaptics_TouchPad" events toggle enabled disabled; exec notify-send "Touchpad" "Touchpad Input has been toggled."

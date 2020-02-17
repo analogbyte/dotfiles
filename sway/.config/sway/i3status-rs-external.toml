@@ -1,0 +1,12 @@
+[theme]
+name = "gruvbox-dark"
+#[theme.overrides]
+#separator = ""
+
+[icons]
+name = "awesome"
+
+[[block]]
+block = "time"
+interval = 60
+format = "%a %d.%m %R"
