@@ -1,7 +1,7 @@
 [options]
 font = Hack 11
 # font = Fira Mono 11
-# font = xos4 Terminus 12
+# font = SourceCodePro Regular 11
 mouse_autohide = true
 browser = firefox-developer-edition
 allow_bold = true
