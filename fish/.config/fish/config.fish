@@ -108,10 +108,6 @@ end
 function fish_mode_prompt
 end
 
-function lg
-    nvim ~/logbook/(date '+%Y-%m-%d').md ~/notes/*
-end
-
 function ww
     timew week 2019-W(printf "%.2d" $argv[1])-1 to 2019-W(printf "%.2d" (math $argv[1]+1))-1
 end
@@ -142,7 +138,7 @@ set -x LESS_TERMCAP_so (printf "\033[01;44;33m")
 set -x LESS_TERMCAP_ue (printf "\033[0m")
 set -x LESS_TERMCAP_us (printf "\033[01;32m")
 
-thefuck --alias | source
+#thefuck --alias | source
 alias vim=nvim
 alias irc='mosh -p 61293 irc -- tmux a -t 0 -d'
 alias r=ranger
