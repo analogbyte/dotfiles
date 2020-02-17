@@ -1,0 +1,9 @@
+#!/usr/bin/fish
+
+set text (sensors | grep Package | cut -d " " -f5 | tr -d +)
+echo $text
+
+set float (echo $text | tr -d °C)
+if test $float -gt 75
+    echo "#fb4934"
+end

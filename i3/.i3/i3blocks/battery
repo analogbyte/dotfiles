@@ -1,0 +1,28 @@
+#!/usr/bin/fish
+
+set line (acpi -b | grep "Battery 1")
+
+set text (echo $line | cut -d" " -f4 | tr -d ,)
+set percent (echo $text | tr -d %)
+set batstatus (echo $line | cut -d" " -f3 | tr -d ,)
+
+if [ $batstatus = "Discharging" ]
+    echo "$text DIS"
+else if [ $batstatus = "Charging" ]
+    echo "$text CHR"
+else
+    echo $text
+end
+
+
+if [ $batstatus = "Discharging" ]
+    if test $percent -lt 20
+        echo "#fb4934"
+    else if test $percent -lt 40
+        echo "#cc241d";
+    else if test $percent -lt 60
+        echo "#d79921";
+    else if test $percent -lt 85
+        echo "#98971a";
+    end
+end

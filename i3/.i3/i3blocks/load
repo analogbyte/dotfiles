@@ -1,0 +1,8 @@
+#!/usr/bin/fish
+
+set load (cut -d ' ' -f1 /proc/loadavg)
+echo $load
+
+if test $load -gt (nproc)
+    echo "#fb4934"
+end

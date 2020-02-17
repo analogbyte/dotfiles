@@ -1,0 +1,8 @@
+#!/usr/bin/fish
+
+echo (df -h -P -l / | tail -1 | column -to' ' | cut -d" " -f4)
+
+set perc (df -h -P -l / | tail -1 | column -to' ' | cut -d" " -f5 | tr -d %)
+if test $perc -gt 90
+    echo "#fb4934"
+end

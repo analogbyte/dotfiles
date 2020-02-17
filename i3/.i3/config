@@ -4,7 +4,7 @@ set $mod Mod4
 # visual
 font pango:Fira Mono, Icons 11
 hide_edge_borders both
-new_window normal 1
+default_border normal 1
 
 set $background  #1d2021
 set $foreground  #ebdbb2
@@ -25,10 +25,10 @@ set $cyan        #8ec07c
 set $lightgrey   #a89984
 set $white       #ebdbb2
 
-client.focused          $darkblue $darkblue $foreground $cyan
-client.focused_inactive $black $black $foreground $black
-client.unfocused        $black $black $foreground $black
-client.urgent           $red $red $background $red
+client.focused          $darkblue $darkblue $foreground $cyan $darkblue
+client.focused_inactive $black $black $foreground $black $black
+client.unfocused        $black $black $foreground $black $black
+client.urgent           $red $red $background $red $red
 
 ##################################
 # bar
@@ -168,7 +168,6 @@ bindsym XF86MonBrightnessDown exec --no-startup-id "light -U 5 && volnoti-show -
 
 ##################################
 # windows
-bindsym --release button13 kill
 bindsym --whole-window $mod+button2 kill
 mode "close? [Y/n]" {
     bindsym y mode "default" kill
@@ -326,7 +325,6 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-
 bindsym $mod+r mode "resize"
 
 mode "move" {
@@ -349,7 +347,6 @@ mode "launch" {
     bindsym t mode "default" exec env LC_TIME=de_DE.utf-8 thunderbird
     bindsym i mode "default" exec gajim
     bindsym n mode "default" exec nautilus
-    bindsym t mode "default" exec termite
     bindsym v mode "default" exec virt-manager
     bindsym s mode "default" exec termite -t 'scratchpad' -e 'ipython'
 
@@ -375,31 +372,6 @@ mode "tag" {
     bindsym 8 mode "default" mark mark8
     bindsym 9 mode "default" mark mark9
     bindsym 0 mode "default" mark mark0
-    bindsym q mode "default" mark markq
-    bindsym w mode "default" mark markw
-    bindsym r mode "default" mark markr
-    bindsym t mode "default" mark markt
-    bindsym y mode "default" mark marky
-    bindsym u mode "default" mark marku
-    bindsym i mode "default" mark marki
-    bindsym o mode "default" mark marko
-    bindsym p mode "default" mark markp
-    bindsym a mode "default" mark marka
-    bindsym s mode "default" mark marks
-    bindsym d mode "default" mark markd
-    bindsym f mode "default" mark markf
-    bindsym g mode "default" mark markg
-    bindsym h mode "default" mark markh
-    bindsym j mode "default" mark markj
-    bindsym k mode "default" mark markk
-    bindsym o mode "default" mark marko
-    bindsym z mode "default" mark markz
-    bindsym x mode "default" mark markx
-    bindsym c mode "default" mark markc
-    bindsym v mode "default" mark markv
-    bindsym b mode "default" mark markb
-    bindsym n mode "default" mark markn
-    bindsym m mode "default" mark markm
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -424,31 +396,6 @@ mode "goto" {
     bindsym Shift+8 mode "default" mark mark8
     bindsym Shift+9 mode "default" mark mark9
     bindsym Shift+0 mode "default" mark mark0
-    bindsym Shift+q mode "default" mark markq
-    bindsym Shift+w mode "default" mark markw
-    bindsym Shift+r mode "default" mark markr
-    bindsym Shift+t mode "default" mark markt
-    bindsym Shift+y mode "default" mark marky
-    bindsym Shift+u mode "default" mark marku
-    bindsym Shift+i mode "default" mark marki
-    bindsym Shift+o mode "default" mark marko
-    bindsym Shift+p mode "default" mark markp
-    bindsym Shift+a mode "default" mark marka
-    bindsym Shift+s mode "default" mark marks
-    bindsym Shift+d mode "default" mark markd
-    bindsym Shift+f mode "default" mark markf
-    bindsym Shift+g mode "default" mark markg
-    bindsym Shift+h mode "default" mark markh
-    bindsym Shift+j mode "default" mark markj
-    bindsym Shift+k mode "default" mark markk
-    bindsym Shift+o mode "default" mark marko
-    bindsym Shift+z mode "default" mark markz
-    bindsym Shift+x mode "default" mark markx
-    bindsym Shift+c mode "default" mark markc
-    bindsym Shift+v mode "default" mark markv
-    bindsym Shift+b mode "default" mark markb
-    bindsym Shift+n mode "default" mark markn
-    bindsym Shift+m mode "default" mark markm
 
     bindsym 1 [con_mark="mark1"] mode "default" focus
     bindsym 2 [con_mark="mark2"] mode "default" focus
@@ -460,31 +407,6 @@ mode "goto" {
     bindsym 8 [con_mark="mark8"] mode "default" focus
     bindsym 9 [con_mark="mark9"] mode "default" focus
     bindsym 0 [con_mark="mark0"] mode "default" focus
-    bindsym q [con_mark="markq"] mode "default" focus
-    bindsym w [con_mark="markw"] mode "default" focus
-    bindsym r [con_mark="markr"] mode "default" focus
-    bindsym t [con_mark="markt"] mode "default" focus
-    bindsym y [con_mark="marky"] mode "default" focus
-    bindsym u [con_mark="marku"] mode "default" focus
-    bindsym i [con_mark="marki"] mode "default" focus
-    bindsym o [con_mark="marko"] mode "default" focus
-    bindsym p [con_mark="markp"] mode "default" focus
-    bindsym a [con_mark="marka"] mode "default" focus
-    bindsym s [con_mark="marks"] mode "default" focus
-    bindsym d [con_mark="markd"] mode "default" focus
-    bindsym f [con_mark="markf"] mode "default" focus
-    bindsym g [con_mark="markg"] mode "default" focus
-    bindsym h [con_mark="markh"] mode "default" focus
-    bindsym j [con_mark="markj"] mode "default" focus
-    bindsym k [con_mark="markk"] mode "default" focus
-    bindsym o [con_mark="marko"] mode "default" focus
-    bindsym z [con_mark="markz"] mode "default" focus
-    bindsym x [con_mark="markx"] mode "default" focus
-    bindsym c [con_mark="markc"] mode "default" focus
-    bindsym v [con_mark="markv"] mode "default" focus
-    bindsym b [con_mark="markb"] mode "default" focus
-    bindsym n [con_mark="markn"] mode "default" focus
-    bindsym m [con_mark="markm"] mode "default" focus
 
     bindsym Return mode "default"
     bindsym Escape mode "default"
@@ -508,56 +430,3 @@ mode "workspace" {
     bindsym Escape mode "default"
 }
 bindsym $mod+backslash mode "workspace"
-
-mode "mouse" {
-    bindsym Up exec --no-startup-id xdotool mousemove_relative -p 0 10
-    bindsym Down exec --no-startup-id xdotool mousemove_relative -p 180 10
-    bindsym Left exec --no-startup-id xdotool mousemove_relative -p 270 10
-    bindsym Right exec --no-startup-id xdotool mousemove_relative -p 90 10
-
-    bindsym --release KP_Enter exec --no-startup-id xdotool click 1
-    bindsym --release XF86Back exec --no-startup-id xdotool key alt+Left
-    bindsym --release XF86HomePage [title="(?i)netflix"] focus
-    bindsym --release XF86MenuKB mode "fastmouse"
-    bindsym --release XF86AudioPlay exec --no-startup-id xdotool key space
-    bindsym --release F86AudioRewind exec --no-startup-id xdotool key shift+KP_Left
-    bindsym --release XF86AudioForward exec --no-startup-id xdotool key shift+KP_Right
-
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-mode "fastmouse" {
-    bindsym Up exec --no-startup-id xdotool mousemove_relative -p 0 100
-    bindsym Down exec --no-startup-id xdotool mousemove_relative -p 180 100
-    bindsym Left exec --no-startup-id xdotool mousemove_relative -p 270 100
-    bindsym Right exec --no-startup-id xdotool mousemove_relative -p 90 100
-
-    bindsym --release KP_Enter exec --no-startup-id xdotool click 1
-    bindsym --release XF86Back exec --no-startup-id xdotool key alt+Left
-    bindsym --release XF86HomePage [title="(?i)netflix"] focus
-    bindsym --release XF86MenuKB mode "scrollmouse"
-    bindsym --release XF86AudioPlay exec --no-startup-id xdotool key space
-    bindsym --release XF86AudioRewind exec --no-startup-id xdotool key shift+KP_Left
-    bindsym --release XF86AudioForward exec --no-startup-id xdotool key shift+KP_Right
-
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-mode "scrollmouse" {
-    bindsym Up exec --no-startup-id xdotool click 4
-    bindsym Down exec --no-startup-id xdotool click 5
-    bindsym Left exec --no-startup-id xdotool click 6
-    bindsym Right exec --no-startup-id xdotool click 7
-
-    bindsym --release KP_Enter mode "mouse"
-    bindsym --release XF86Back exec --no-startup-id xdotool key alt+Left
-    bindsym --release XF86HomePage [title="(?i)netflix"] focus
-    bindsym --release XF86MenuKB mode "mouse"
-    bindsym --release XF86AudioPlay exec --no-startup-id xdotool key space
-    bindsym --release XF86AudioRewind exec --no-startup-id xdotool key shift+KP_Left
-    bindsym --release XF86AudioForward exec --no-startup-id xdotool key shift+KP_Right
-
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-bindsym $mod+x mode "mouse"
