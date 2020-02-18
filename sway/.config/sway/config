@@ -21,11 +21,6 @@ set $cyan        #8ec07c
 set $lightgrey   #a89984
 set $white       #ebdbb2
 
-set $background_alpha $backgroundb0
-set $foreground_alpha $foregroundb0
-set $darkblue_alpha $darkblueb0
-set $red_alpha $redb0
-
 client.focused          $darkblue $darkblue $foreground $cyan $darkblue
 client.focused_inactive $black $black $foreground $black $black
 client.unfocused        $black $black $foreground $black $black
@@ -138,27 +133,7 @@ exec redshift -l 48.775846:9.182932
 exec termite -t 'scratch: ipython' -e 'fish -c "while true; ipython; end"'
 exec termite -t 'scratch: notes' -e 'fish -c "cd ~/notes/; while true; nvim *; end"'
 
-set $locker swaylock-blur --ignore-empty-password \
-        --show-failed-attempts \
-        --line-uses-inside \
-        --indicator-radius=200 \
-        --indicator-thickness=20 \
-        --inside-color=$background \
-        --inside-ver-color=$background \
-        --inside-clear-color=$background \
-        --inside-wrong-color=$background \
-        --separator-color=$background \
-        --key-hl-color=$darkblue \
-        --bs-hl-color=$red \
-        --ring-color=$background_alpha \
-        --text-color=$foreground_alpha \
-        --ring-clear-color=$background_alpha \
-        --text-clear-color=$foreground \
-        --ring-ver-color=$darkblue_alpha \
-        --text-ver-color=$foreground \
-        --ring-wrong-color=$red_alpha \
-        --text-wrong-color=$foreground
-
+set $locker swaylock-blur -- -C ~/.config/sway/swaylock.conf
 exec swayidle -w \
     timeout 600 "$locker" \
     timeout 900 'swaymsg "output * dpms off"' \
