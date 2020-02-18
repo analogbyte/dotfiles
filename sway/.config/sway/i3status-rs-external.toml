@@ -1,7 +1,7 @@
 [theme]
 name = "gruvbox-dark"
-#[theme.overrides]
-#separator = ""
+[theme.overrides]
+separator = "<span font='15'></span>"
 
 [icons]
 name = "awesome"

@@ -1,6 +1,6 @@
 ##################################
 # visual
-font pango:Fira Mono, FontAwesome 11
+font pango:Fira Mono, FontAwesome, Hack Nerd Font Complete Mono 11
 
 set $background  #1d2021
 set $foreground  #ebdbb2
@@ -30,6 +30,7 @@ smart_borders on
 hide_edge_borders both
 default_border pixel 1
 
+# main bar, always shown
 bar {
     id main
     output eDP-1
@@ -46,6 +47,7 @@ bar {
         urgent_workspace   $red $red $black
     }
 }
+# additional bar, toggled with Mod4+;
 bar {
     id net
     output eDP-1
@@ -56,10 +58,9 @@ bar {
     modifier none
     mode hide
     hidden_state hide
-    #gaps 15px
-    position bottom
+    position top
     colors {
-        background $black
+        background $background
         statusline $foreground
         separator $darkgrey
 
@@ -69,6 +70,7 @@ bar {
         urgent_workspace   $red $red $black
     }
 }
+# clock only bar for external displays
 bar {
     id ext
     output DP-1

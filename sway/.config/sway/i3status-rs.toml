@@ -1,7 +1,7 @@
 [theme]
 name = "gruvbox-dark"
 [theme.overrides]
-separator = ""
+separator = "<span font='15'></span>"
 
 [icons]
 name = "awesome"
@@ -53,6 +53,9 @@ block = "music"
 player = "spotify"
 buttons = ["play", "next"]
 on_collapsed_click = "spotify"
+max_width = 30
+marquee_speed = 0.2
+marquee_interval = 5
 
 [[block]]
 block = "battery"
