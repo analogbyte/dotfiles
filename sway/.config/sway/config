@@ -77,6 +77,8 @@ bar {
     output DP-2
     output DP-3
     output DP-4
+    output DP-5
+    output DP-6
     status_command i3status-rs ~/.config/sway/i3status-rs-external.toml
     tray_output none
     position top
@@ -133,13 +135,12 @@ exec redshift -l 48.775846:9.182932
 exec termite -t 'scratch: ipython' -e 'fish -c "while true; ipython; end"'
 exec termite -t 'scratch: notes' -e 'fish -c "cd ~/notes/; while true; nvim *; end"'
 
-set $locker swaylock-blur -- -C ~/.config/sway/swaylock.conf
 exec swayidle -w \
-    timeout 600 "$locker" \
+    timeout 600 'swaylock-blur' \
     timeout 900 'swaymsg "output * dpms off"' \
     timeout 15 'if pgrep -x swaylock; then swaymsg "output * dpms off"; fi' \
     resume 'swaymsg "output * dpms on"' \
-    before-sleep "$locker"
+    before-sleep 'swaylock-blur'
 
 
 ##################################
@@ -194,7 +195,7 @@ bindsym Mod4+d exec termite --name=launcher -e "bash -c 'compgen -c | grep -E '^
 
 ##################################
 # sway control key bindings
-bindsym Ctrl+Mod1+l exec swaylock-blur -- -C ~/.config/sway/swaylock.conf
+bindsym Ctrl+Mod1+l exec swaylock-blur
 bindsym Mod4+Shift+c reload
 bindsym Mod4+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -b 'Yes, exit sway' 'swaymsg exit'
 

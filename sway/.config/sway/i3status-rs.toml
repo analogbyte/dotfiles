@@ -61,7 +61,7 @@ marquee_interval = 5
 block = "battery"
 device = "BAT1"
 interval = 10
-format = "{percentage}% {time}"
+format = "{percentage}%"
 
 [[block]]
 block = "time"
