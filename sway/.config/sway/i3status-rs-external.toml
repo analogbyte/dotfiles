@@ -5,6 +5,8 @@ separator = "<span font='15'></span>"
 
 [icons]
 name = "awesome"
+[icons.overrides]
+time = " "
 
 [[block]]
 block = "time"

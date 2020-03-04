@@ -20,10 +20,6 @@ function my_vi_key_bindings
 end
 set -g fish_key_bindings my_vi_key_bindings
 
-#function sudobangbang --on-event fish_postexec
-#    abbr !! sudo $argv[1]
-#end
-
 function unclean_repos
     for path in (find -name ".git" -type d | grep -v "/.cache/")
         cd $path/..
@@ -34,15 +30,6 @@ function unclean_repos
         cd -
     end
 end
-
-#function __chdir_hook --on-variable PWD --description 'do stuff on dir change'
-#    status --is-command-substitution; and return
-#
-#    if [ $PWD = "/home/danieln/work/go" ]
-#        echo "Setting GOPATH."
-#        set -x GOPATH ~/work/go
-#    end
-#end
 
 set fish_greeting ""
 
@@ -116,9 +103,6 @@ if not set -q VIRTUAL_ENV
     eval (python -m virtualfish)
 end
 
-# source /home/danieln/Code/z-fish/z.fish
-# source /usr/share/autojump/autojump.fish
-
 set -x PATH /home/danieln/.cargo/bin /usr/local/bin/ /home/danieln/.gem/ruby/2.4.0/bin /home/danieln/.gem/ruby/2.6.0/bin $PATH
 
 # gpg and ssh agent
@@ -138,11 +122,9 @@ set -x LESS_TERMCAP_so (printf "\033[01;44;33m")
 set -x LESS_TERMCAP_ue (printf "\033[0m")
 set -x LESS_TERMCAP_us (printf "\033[01;32m")
 
-#thefuck --alias | source
 alias vim=nvim
 alias irc='mosh -p 61293 irc -- tmux a -t 0 -d'
 alias r=ranger
-alias ssh='env TERM=xterm-256color ssh'
 alias docker_ip="docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
 alias merge_pdf="gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile=merged.pdf"
 alias ip='ip -c'
