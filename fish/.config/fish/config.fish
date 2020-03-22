@@ -1,5 +1,4 @@
 set -x LANG en_US.UTF-8
-set -x TERM xterm
 
 function my_vi_key_bindings
     fish_vi_key_bindings
@@ -130,3 +129,4 @@ alias docker_ip="docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
 alias merge_pdf="gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile=merged.pdf"
 alias ip='ip -c'
 alias dmesg='dmesg -T'
+alias bin='curl -X PUT --data-binary @- https://bin.danieln.de'
