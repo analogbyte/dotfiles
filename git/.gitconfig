@@ -12,7 +12,5 @@
     grep = grep -Ii
     ready = rebase -i @{u}
     branchsync = remote update origin --prune
-[push]
-    default = current
 [color]
     ui = true

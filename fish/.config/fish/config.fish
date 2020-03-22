@@ -1,4 +1,5 @@
 set -x LANG en_US.UTF-8
+set -x TERM xterm
 
 function my_vi_key_bindings
     fish_vi_key_bindings
