@@ -12,5 +12,11 @@
     grep = grep -Ii
     ready = rebase -i @{u}
     branchsync = remote update origin --prune
+    edit-unmerged = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; nvim `f`"
+    add-unmerged = "!f() { git diff --name-status --diff-filter=U | cut -f2 ; }; git add `f`"
 [color]
     ui = true
+[push]
+    default = current
+[pull]
+    rebase = true
