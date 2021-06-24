@@ -1,9 +1,9 @@
 [options]
-font = Hack 11
-# font = Fira Mono 11
+# font = Hack 11
+font = Fira Mono 11
 # font = SourceCodePro Regular 11
 mouse_autohide = true
-browser = firefox-developer-edition
+browser = firefox
 allow_bold = true
 cursor_blink = off
 cursor_shape = block
@@ -15,35 +15,69 @@ visible_bell = true
 urgent_on_bell = true
 
 [colors]
-## gruvbox {{{
-# hard contrast: background = #1d2021
-# soft contrast: background = #32302f
-# middle contrast: background = #282828
+## gruvbox dark {{{
 background = #1d2021
+# regular contrast: background = #282828
+# soft contrast: background = #32302f
 foreground = #ebdbb2
 foreground_bold = #ebdbb2
-# Black + DarkGrey
-color0 = #1d2021
+
+# dark0 + gray
+color0 = #282828
 color8 = #928374
-# DarkRed + Red
+# neutral_red + bright_red
 color1 = #cc241d
 color9 = #fb4934
-# DarkGreen + Green
+# neutral_green + bright_green
 color2 = #98971a
 color10 = #b8bb26
-# DarkYellow + Yellow
+# neutral_yellow + bright_yellow
 color3 = #d79921
 color11 = #fabd2f
-# DarkBlue + Blue
+# neutral_blue + bright_blue
 color4 = #458588
 color12 = #83a598
-# DarkMagenta + Magenta
+# neutral_purple + bright_purple
 color5 = #b16286
 color13 = #d3869b
-# DarkCyan + Cyan
+# neutral_aqua + faded_aqua
 color6 = #689d6a
 color14 = #8ec07c
-# LightGrey + White
+# light4 + light1
 color7 = #a89984
 color15 = #ebdbb2
 ## }}}
+# ## gruvbox light {{{
+# # hard contrast:
+# # background = #f9f5d7
+# # regular contrast:
+# background = #fbf1c7
+# # soft contrast:
+# # background = #f2e5bc
+# foreground = #3c3836
+# foreground_bold = #3c3836
+# # light0 + gray
+# color0 = #fbf1c7
+# color8 = #928374
+# # neutral_red + faded_red
+# color1 = #cc241d
+# color9 = #9d0006
+# # neutral_green + faded_green
+# color2 = #98971a
+# color10 = #79740e
+# # neutral_yellow + faded_yellow
+# color3 = #d79921
+# color11 = #b57614
+# # neutral_blue + faded_blue
+# color4 = #458588
+# color12 = #076678
+# # neutral_purple + faded_purple
+# color5 = #b16286
+# color13 = #8f3f71
+# # neutral_aqua + faded_aqua
+# color6 = #689d6a
+# color14 = #427b58
+# # dark4 + dark1
+# color7 = #7c6f64
+# color15 = #3c3836
+# ## }}}
