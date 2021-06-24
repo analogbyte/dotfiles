@@ -1,67 +1,60 @@
+#####################################################################
+# basic settings {{{
+#####################################################################
+set -x TERM xterm
 set -x LANG en_US.UTF-8
-
-function my_vi_key_bindings
-    fish_vi_key_bindings
-    bind -M insert \cl 'clear; commandline -f repaint'
-    bind -M insert \e. 'history-token-search-backward'
-    bind -M insert \e\[H beginning-of-line
-    bind -M insert \e\[F end-of-line
-    bind -M insert \ep __fish_paginate
-    bind -M insert \el 'echo ''; ls; commandline -f repaint'
-    bind -M insert -k dc delete-char
-    function __fzf_ctrl_r
-        history | fzf +m --tiebreak=index --toggle-sort=ctrl-r | read -l select
-        and commandline -rb $select
-        commandline -f repaint
-    end
-    bind -M insert \cr '__fzf_ctrl_r'
-    bind -M insert \cf 'fg % ^ /dev/null'
-    bind \cz 'fg %'
-end
-set -g fish_key_bindings my_vi_key_bindings
-
-function unclean_repos
-    for path in (find -name ".git" -type d | grep -v "/.cache/")
-        cd $path/..
-        git status | grep clean > /dev/null
-        if test $status -ne 0
-            echo $path/..
-        end
-        cd -
-    end
-end
+set -x PATH /home/danieln/.cargo/bin /usr/local/bin/ $PATH
+set -x EDITOR nvim
 
 set fish_greeting ""
 
+function fish_user_key_bindings
+    fish_default_key_bindings -M insert
+    fish_vi_key_bindings --no-erase insert
+    fzf_key_bindings
+end
+
+set -x NVIM_TUI_ENABLE_TRUE_COLOR 1
+set -x MANWIDTH 100
+set -x VAGRANT_DEFAULT_PROVIDER libvirt
+set -x LESS_TERMCAP_mb (printf "\033[01;31m")
+set -x LESS_TERMCAP_md (printf "\033[01;31m")
+set -x LESS_TERMCAP_me (printf "\033[0m")
+set -x LESS_TERMCAP_se (printf "\033[0m")
+set -x LESS_TERMCAP_so (printf "\033[01;44;33m")
+set -x LESS_TERMCAP_ue (printf "\033[0m")
+set -x LESS_TERMCAP_us (printf "\033[01;32m")
+
+# keychain
+if status is-login
+   eval (keychain --eval --quiet --agents ssh,gpg id_belwue id_danieln 9B8686A3022A370E)
+end
+if test -f ~/.keychain/(hostname)-fish
+    source ~/.keychain/(hostname)-fish
+end
+if test -f ~/.keychain/(hostname)-gpg-fish
+    source ~/.keychain/(hostname)-gpg-fish
+end
+
+# }}}
+
+#####################################################################
+# prompt stuff {{{
+#####################################################################
 set -g __fish_git_prompt_show_informative_status 1
-set -g __fish_git_prompt_hide_untrackedfiles 1
 
 set -g __fish_git_prompt_color_branch magenta
 set -g __fish_git_prompt_showupstream "informative"
-set -g __fish_git_prompt_char_upstream_ahead "↑"
-set -g __fish_git_prompt_char_upstream_behind "↓"
-set -g __fish_git_prompt_char_upstream_prefix ""
-
-set -g __fish_git_prompt_char_stagedstate "●"
-set -g __fish_git_prompt_char_dirtystate "✚"
-set -g __fish_git_prompt_char_untrackedfiles "…"
-set -g __fish_git_prompt_char_conflictedstate "✖"
-set -g __fish_git_prompt_char_cleanstate "✔"
 
 set -g __fish_git_prompt_color_dirtystate blue
 set -g __fish_git_prompt_color_stagedstate yellow
 set -g __fish_git_prompt_color_invalidstate red
-set -g __fish_git_prompt_color_untrackedfiles $fish_color_normal
 set -g __fish_git_prompt_color_cleanstate green
-
-function prompt_long_pwd --description 'Print the current working directory'
-    echo $PWD | sed -e "s|^$HOME|~|"
-end
 
 function indicate_ranger --description 'Print a indicator when running in ranger'
     set NUM (pstree -s %self | grep -o ranger | wc -l)
     for x in (seq $NUM)
-        echo -n ">"
+        echo -n "#"
     end
 end
 
@@ -76,51 +69,47 @@ function fish_prompt
         end
         echo -n $pre_prompt_eval_status' '
     end
-    set_color normal
+    set_color cyan
     if set -q VIRTUAL_ENV
-        echo -n -s (set_color cyan) "(" (basename "$VIRTUAL_ENV") ")" (set_color normal) " "
+        echo -n "("(basename "$VIRTUAL_ENV")") "
     end
     set_color red
     echo -n (whoami)
     set_color normal
     echo -n "@"(hostname)" "
     set_color green
-    echo -n (prompt_long_pwd)
+    echo -n $PWD | sed -e "s|^$HOME|~|"
     set_color normal
     printf '%s' (__fish_git_prompt)
+    echo -n ' '
     echo -n (indicate_ranger)
-    echo -n '> '
+    echo -n '# '
+end
+
+function fish_right_prompt
+  # display the timestamp on the utmost right.
+  set_color 32302f
+  echo -n '  ['(date +%H:%M:%S)']'
+  set_color normal
 end
 
 function fish_mode_prompt
 end
+# }}}
 
-function ww
-    timew week 2019-W(printf "%.2d" $argv[1])-1 to 2019-W(printf "%.2d" (math $argv[1]+1))-1
+#####################################################################
+# custom commands {{{
+#####################################################################
+function unclean_repos
+    for path in (find -name ".git" -type d | grep -v "/.cache/")
+        cd $path/..
+        git status | grep clean > /dev/null
+        if test $status -ne 0
+            echo $path/..
+        end
+        cd -
+    end
 end
-
-if not set -q VIRTUAL_ENV
-    eval (python -m virtualfish)
-end
-
-set -x PATH /home/danieln/.cargo/bin /usr/local/bin/ /home/danieln/.gem/ruby/2.4.0/bin /home/danieln/.gem/ruby/2.6.0/bin $PATH
-
-# gpg and ssh agent
-echo "UPDATESTARTUPTTY" | gpg-connect-agent > /dev/null 2>&1
-set -x SSH_AUTH_SOCK $XDG_RUNTIME_DIR/gnupg/S.gpg-agent.ssh
-
-set -x EDITOR nvim
-
-set -x NVIM_TUI_ENABLE_TRUE_COLOR 1
-set -x MANWIDTH 100
-set -x VAGRANT_DEFAULT_PROVIDER libvirt
-set -x LESS_TERMCAP_mb (printf "\033[01;31m")
-set -x LESS_TERMCAP_md (printf "\033[01;31m")
-set -x LESS_TERMCAP_me (printf "\033[0m")
-set -x LESS_TERMCAP_se (printf "\033[0m")
-set -x LESS_TERMCAP_so (printf "\033[01;44;33m")
-set -x LESS_TERMCAP_ue (printf "\033[0m")
-set -x LESS_TERMCAP_us (printf "\033[01;32m")
 
 alias vim=nvim
 alias irc='mosh -p 61293 irc -- tmux a -t 0 -d'
@@ -129,4 +118,11 @@ alias docker_ip="docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
 alias merge_pdf="gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -sOutputFile=merged.pdf"
 alias ip='ip -c'
 alias dmesg='dmesg -T'
-alias bin='curl -X PUT --data-binary @- https://bin.danieln.de'
+# }}}
+
+#####################################################################
+# ledger stuff {{{
+#####################################################################
+set -x LEDGER_FILE /home/danieln/finance/hledger.journal
+alias hl=hledger
+# }}}
