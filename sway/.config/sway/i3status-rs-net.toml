@@ -9,73 +9,44 @@ name = "awesome"
 time = " "
 
 [[block]]
-block = "net"
-device = "wlp4s0"
-ssid = true
-ip = true
-speed_up = false
-speed_down = false
-interval = 5
-hide_inactive = true
-hide_missing = true
-
-[[block]]
-block = "net"
-device = "enp0s31f6"
-ip = true
-speed_up = false
-speed_down = false
-interval = 5
-hide_inactive = true
-hide_missing = true
-
-[[block]]
-block = "net"
-device = "tap0"
-ip = true
-speed_up = false
-speed_down = false
-interval = 5
-hide_inactive = true
-hide_missing = true
-#on_click = "swaymsg -q -- exec fish -c 'nmcli c u belwue-udp-v4; or nmcli c d belwue-udp-v4'"
+block = "networkmanager"
 
 [[block]]
 block = "toggle"
-text = "BelWü UDP4"
-command_state = "nmcli c s belwue-udp-v4 | grep connected"
-command_on = "nmcli c u belwue-udp-v4"
-command_off = "nmcli c d belwue-udp-v4"
+text = "BelWü"
+command_state = "netctl status belwue_openconnect | grep ' active'"
+command_on = "sudo netctl start belwue_openconnect"
+command_off = "sudo netctl stop belwue_openconnect"
 interval = 5
 
 [[block]]
 block = "toggle"
-text = "BelWü UDP6"
-command_state = "nmcli c s belwue-udp-v6 | grep connected"
-command_on = "nmcli c u belwue-udp-v6"
-command_off = "nmcli c d belwue-udp-v6"
+text = "BelWü split"
+command_state = "netctl status belwue_openconnect_split | grep ' active'"
+command_on = "sudo netctl start belwue_openconnect_split"
+command_off = "sudo netctl stop belwue_openconnect_split"
 interval = 5
 
 [[block]]
 block = "toggle"
-text = "BelWü TCP4"
-command_state = "nmcli c s belwue-tcp-v4 | grep connected"
-command_on = "nmcli c u belwue-tcp-v4"
-command_off = "nmcli c d belwue-tcp-v4"
+text = "BW ovpn udp"
+command_state = "nmcli c s belwue-udp | grep connected"
+command_on = "nmcli c u belwue-udp"
+command_off = "nmcli c d belwue-udp"
 interval = 5
 
 [[block]]
 block = "toggle"
-text = "BelWü TCP6"
-command_state = "nmcli c s belwue-tcp-v6 | grep connected"
-command_on = "nmcli c u belwue-tcp-v6"
-command_off = "nmcli c d belwue-tcp-v6"
+text = "BW ovpn tcp"
+command_state = "nmcli c s belwue-tcp | grep connected"
+command_on = "nmcli c u belwue-tcp"
+command_off = "nmcli c d belwue-tcp"
 interval = 5
 
 [[block]]
 block = "toggle"
-text = "Uni Ulm"
-command_state = "nmcli c s uulm-vpn | grep connected"
-command_on = "nmcli c u uulm-vpn"
-command_off = "nmcli c d uulm-vpn"
+text = "UUlm openconnect"
+command_state = "netctl status uulm_openconnect | grep ' active'"
+command_on = "sudo netctl start uulm_openconnect"
+command_off = "sudo netctl stop uulm_openconnect"
 interval = 5
