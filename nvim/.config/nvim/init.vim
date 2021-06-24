@@ -30,6 +30,7 @@ Plug 'machakann/vim-highlightedyank'
 " editing
 Plug 'tpope/vim-commentary' " toggle comments according to ft (mapping: gc)
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 " Cheatsheet for surround:
 "  cs + $old_surrounding + $new_surrounding = changes old to new, new waits for
 "      xml tags, to use xml tags as $old, use 't'
@@ -47,7 +48,7 @@ Plug 'goldfeld/vim-seek'
 "  All those work backwards with their capital counterparts.
 
 " linter
-Plug 'w0rp/ale'
+Plug 'w0rp/ale', {'for': 'python'}
 
 " language support
 Plug 'ap/vim-css-color', {'for': 'css'}
@@ -56,6 +57,8 @@ Plug 'pearofducks/ansible-vim'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'google/yapf', {'for': 'python'} " auto format
 Plug 'davidhalter/jedi-vim', {'for': 'python'} " auto completion
+Plug 'dag/vim-fish'
+Plug 'ledger/vim-ledger'
 
 call plug#end()
 
@@ -71,7 +74,9 @@ filetype plugin indent on
 
 " system
 set enc=utf-8
-let shell = system("which fish")
+if &shell =~# 'fish$'
+    set shell=sh
+endif
 set backspace=indent,eol,start
 
 " single settings
@@ -290,7 +295,7 @@ nnoremap <silent><leader>P :Files /home/danieln<CR>
 " Colorscheme from bundle
 set background=dark
 " toggle light/dark (needs unimpaired.vim)
-nmap <leader>c =ob
+nmap <leader>c yob
 set termguicolors
 let g:gruvbox_contrast_dark='hard'
 let g:airline_theme = 'gruvbox'
